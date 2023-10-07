@@ -39,7 +39,7 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 | File Name      | Description                                                                       |
 |----------------|-----------------------------------------------------------------------------------|
 | .gitignore     | Tells GIT which files not to track within the project directory.                  |
-| License        | The MIT license gives express permission for users to reuse code for any purpose. |
+| LICENSE        | The MIT license gives express permission for users to reuse code for any purpose. |
 | README.md      | The markdown file you are currently reading.                                      |
 | STAT4630.Rproj | Contains basic configuration options for the project.                             |
 

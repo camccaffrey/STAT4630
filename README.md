@@ -2,11 +2,54 @@
 
 Group 13's Repository for STAT 4630: Statistical Machine Learning
 
-## Setup Instructions
+------------------------------------------------------------------------
+
+## Table of Contents
+
+-   [Important Links](#important-links)
+
+-   [File Descriptions](#file-descriptions)
+
+-   [Setup Instructions](#setup-instructions)
+
+    -   [Prerequisites](#prerequisites)
+
+    -   [Clone Repository](#clone-repository)
+
+    -   [Creating Local Changes](#creating-local-changes)
+
+    -   [Pushing to GitHub](#pushing-to-github)
+
+------------------------------------------------------------------------
+
+## Important Links {#important-links}
+
+-   [Google Drive Project Folder](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z?usp=drive_link)
+
+-   [Schedule & Contact Info](https://docs.google.com/spreadsheets/d/12F8hKwLkV5tnXcsUE9qrD-ibVNVBkb0jPGl12eB_yXY/edit?usp=sharing)
+
+-   [Kaggle Dataset](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)
+
+-   [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE/edit?usp=sharing)
+
+------------------------------------------------------------------------
+
+## File Descriptions {#file-descriptions}
+
+| File Name      | Description                                                                       |
+|----------------|-----------------------------------------------------------------------------------|
+| .gitignore     | Tells GIT which files not to track within the project directory.                  |
+| License        | The MIT license gives express permission for users to reuse code for any purpose. |
+| README.md      | The markdown file you are currently reading.                                      |
+| STAT4630.Rproj | Contains basic configuration options for the project.                             |
+
+------------------------------------------------------------------------
+
+## Setup Instructions {#setup-instructions}
 
 For more detailed instructions, follow [this tutorial](https://happygitwithr.com/rstudio-git-github.html).
 
-### Prerequisites
+### Prerequisites {#prerequisites}
 
 -   Create a free [GitHub account](https://github.com/join).
 
@@ -14,7 +57,7 @@ For more detailed instructions, follow [this tutorial](https://happygitwithr.com
 
 -   Install [Git](https://git-scm.com/downloads).
 
-### Clone Repository
+### Clone Repository {#clone-repository}
 
 In Rstudio, create a new project: *File \> New Project \> Version Control \> Git*.
 
@@ -22,9 +65,9 @@ In Rstudio, create a new project: *File \> New Project \> Version Control \> Git
 
 -   Notice where the project will be saved under "Create project as subdirectory of."
 
--   It will be easiest if you leave "Project directory name" unchanged. 2.
+-   It will be easiest if you leave "Project directory name" unchanged.
 
-### Saving Local Changes
+### Creating Local Changes {#creating-local-changes}
 
 #### Pulling
 
@@ -45,6 +88,6 @@ To make a commit, navigate to *Version Control (GIT)* \> *Commit*.
 2.  Type a message in "Commit message", such as "Updated README" or "Added data cleaning script."
 3.  Click "Commit."
 
-### Pushing to GitHub
+### Pushing to GitHub {#pushing-to-github}
 
 "Pushing" allows you to share your committed changes to a remote location; in this case, our [GitHub repository](https://github.com/camccaffrey/STAT4630). When you're ready, navigate to *Version Control (GIT)* \> *Push Branch*.

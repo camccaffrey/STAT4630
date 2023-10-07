@@ -22,7 +22,7 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 ------------------------------------------------------------------------
 
-## Important Links {#important-links}
+## Important Links
 
 -   [Google Drive Project Folder](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z?usp=drive_link)
 
@@ -34,22 +34,22 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 ------------------------------------------------------------------------
 
-## File Descriptions {#file-descriptions}
+## File Descriptions
 
 | File Name      | Description                                                                       |
 |----------------|-----------------------------------------------------------------------------------|
 | .gitignore     | Tells GIT which files not to track within the project directory.                  |
-| License        | The MIT license gives express permission for users to reuse code for any purpose. |
+| LICENSE        | The MIT license gives express permission for users to reuse code for any purpose. |
 | README.md      | The markdown file you are currently reading.                                      |
 | STAT4630.Rproj | Contains basic configuration options for the project.                             |
 
 ------------------------------------------------------------------------
 
-## Setup Instructions {#setup-instructions}
+## Setup Instructions
 
 For more detailed instructions, follow [this tutorial](https://happygitwithr.com/rstudio-git-github.html).
 
-### Prerequisites {#prerequisites}
+### Prerequisites
 
 -   Create a free [GitHub account](https://github.com/join).
 
@@ -57,7 +57,7 @@ For more detailed instructions, follow [this tutorial](https://happygitwithr.com
 
 -   Install [Git](https://git-scm.com/downloads).
 
-### Clone Repository {#clone-repository}
+### Clone Repository
 
 In Rstudio, create a new project: *File \> New Project \> Version Control \> Git*.
 
@@ -67,7 +67,7 @@ In Rstudio, create a new project: *File \> New Project \> Version Control \> Git
 
 -   It will be easiest if you leave "Project directory name" unchanged.
 
-### Creating Local Changes {#creating-local-changes}
+### Creating Local Changes
 
 #### Pulling
 
@@ -88,6 +88,6 @@ To make a commit, navigate to *Version Control (GIT)* \> *Commit*.
 2.  Type a message in "Commit message", such as "Updated README" or "Added data cleaning script."
 3.  Click "Commit."
 
-### Pushing to GitHub {#pushing-to-github}
+### Pushing to GitHub
 
 "Pushing" allows you to share your committed changes to a remote location; in this case, our [GitHub repository](https://github.com/camccaffrey/STAT4630). When you're ready, navigate to *Version Control (GIT)* \> *Push Branch*.

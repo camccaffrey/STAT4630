@@ -1,0 +1,182 @@
+---
+title: "Milestone 3 EDA"
+author: "Group 13"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+# Load Packages & data
+```{r, global_options}
+knitr::opts_chunk$set(message=FALSE, tidy.opts=list(width.cutoff=60), tidy=TRUE) 
+```
+
+```{r}
+# list required packages
+list.of.packages  =  c("tidyverse", "GGally", "rlang", "ggtext", "viridis", "glue", "countrycode", "MASS", "klaR", "ICS")
+
+# check and install packages
+new.packages  =  list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+# load packages
+lapply(list.of.packages, require, character.only = TRUE)
+```
+
+```{r}
+data = read.csv("cost-of-living_v2.csv")
+```
+
+# Data Cleaning & Processing
+
+Renaming columns
+```{r}
+cost_of_living = data %>% rename(CheapMeal = x1,
+                                 meal1 = x2,
+                                 meal2 = x2,
+                                 mcmeal = x3,
+                                 beer.rest.domestic = x4,
+                                 beer.rest.imported = x5, 
+                                 coffee = x6,
+                                 soda = x7,
+                                 water.rest = x8,
+                                 milk = x9,
+                                 bread = x10,
+                                 rice = x11,
+                                 eggs = x12,
+                                 cheese = x13,
+                                 chicken = x14,
+                                 beef = x15,
+                                 apples = x16,
+                                 bananas = x17,
+                                 oranges = x18,
+                                 tomatoes = x19,
+                                 potatoes = x20,
+                                 onions = x21,
+                                 lettuce = x22,
+                                 water.market = x23,
+                                 wine = x24,
+                                 beer.market.domestic = x25,
+                                 beer.market.imported = x26,
+                                 cigarettes = x27,
+                                 ticket = x28,
+                                 pass = x29,
+                                 taxi.start = x30,
+                                 taxi.km = x31,
+                                 taxi.hr = x32,
+                                 gas = x33,
+                                 volkswagen = x34,
+                                 toyota = x35,
+                                 basic = x36,
+                                 mobile = x37,
+                                 internet = x38,
+                                 gym = x39,
+                                 tennis = x40,
+                                 cinema = x41,
+                                 preschool = x42,
+                                 school = x43,
+                                 jeans = x44,
+                                 dresses = x45,
+                                 nikes = x46,
+                                 shoes = x47,
+                                 rent1.center = x48,
+                                 rent1.outer = x49,
+                                 rent3.center = x50,
+                                 rent3.outer = x51,
+                                 sqm.center = x52,
+                                 sqm.outer = x53,
+                                 salary = x54,
+                                 mortgage = x55,
+                                 quality = data_quality)
+```
+
+Making binary response variable 
+```{r}
+middle = median(cost_of_living$rent1.center, na.rm=T)
+cost_of_living = cost_of_living %>% mutate(expensive = ifelse(rent1.center>=middle, "expensive", "inexpensive"))
+```
+
+Adding continent variable
+```{r}
+cost_of_living$continent = countrycode(
+  sourcevar = cost_of_living$country,
+  origin = "country.name",
+  destination = "continent")
+```
+Splitting into train and test
+```{r}
+set.seed(4630)
+
+sample_data = sample.int(nrow(cost_of_living), floor(.50*nrow(cost_of_living)), replace = F)
+train = cost_of_living[sample_data, ]
+test = cost_of_living[-sample_data, ]
+```
+
+# EDA
+
+Counts
+```{r}
+table(train$expensive)
+```
+Proportions
+```{r}
+prop.table(table(train$expensive))
+```
+
+Finding outliers for numerical variables 
+```{r}
+find_outliers = function(x) {
+  x = x[!is.na(x)]
+  q1 = quantile(x, 0.25)
+  q3 = quantile(x, 0.75)
+  iqr = q3 - q1
+  lower_bound = q1 - 1.5 * iqr
+  upper_bound = q3 + 1.5 * iqr
+  outliers = x < lower_bound | x > upper_bound
+  return(outliers)
+}
+
+outliers_counts = sapply(train[,3:58], find_outliers)
+
+count_percentage_outliers = sapply(outliers_counts, function(col) {
+  count = sum(col, na.rm = TRUE)
+  percentage = (count / length(col)) * 100
+  return(c(Count = count, Percentage = percentage))
+})
+
+outliers_dataframe = data.frame(Counts_Outliers = count_percentage_outliers[1, ], 
+                    Percentage_Outliers = count_percentage_outliers[2, ])
+
+outliers_dataframe
+```
+Summary statistics for numerical variables 
+```{r}
+summary_list = apply(train[3:58], 2, summary)
+summary_matrix = matrix(unlist(summary_list), ncol = length(summary_list[[1]]), byrow = TRUE)
+summary_df = as.data.frame(summary_matrix, stringsAsFactors = FALSE)
+rownames(summary_df) = names(summary_list)
+colnames(summary_df) = c("min", "q1", "median", "mean", "q3", "max", "NAs")
+
+summary_df
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

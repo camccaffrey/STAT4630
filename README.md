@@ -38,17 +38,17 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 ## Files & Directories
 
-| Name             | Description                                                                             |
-|----------------  |-----------------------------------------------------------------------------------------|
-| `Data`           | Directory containing `.csv` data files                                                  |
-| `Scripts`        | Directory containing `.R` scripts                                                       |
-| `renv`           | Directory for our "reproducible environment" (see [Loading Packages](#loading-packages) |
-| `.Rprofile`      | Configuration file for our R environment                                                |
-| `.gitignore`     | Tells GIT which files not to track within the project directory                         |
-| `LICENSE`        | The MIT license gives express permission for users to reuse code for any purpose        |
-| `README.md`      | The markdown file you are currently reading                                             |
-| `STAT4630.Rproj` | Contains basic configuration options for the project                                    |
-| `renv.lock`      | Records a list of the dependencies (and versions) used in our project                   |
+| Name             | Description                                                                              |
+|----------------  |------------------------------------------------------------------------------------------|
+| `Data`           | Directory containing `.csv` data files                                                   |
+| `Scripts`        | Directory containing `.R` scripts                                                        |
+| `renv`           | Directory for our "reproducible environment" (see [Loading Packages](#loading-packages)) |
+| `.Rprofile`      | Configuration file for our R environment                                                 |
+| `.gitignore`     | Tells GIT which files not to track within the project directory                          |
+| `LICENSE`        | The MIT license gives express permission for users to reuse code for any purpose         |
+| `README.md`      | The markdown file you are currently reading                                              |
+| `STAT4630.Rproj` | Contains basic configuration options for the project                                     |
+| `renv.lock`      | Records a list of the dependencies (and versions) used in our project                    |
 
 ------------------------------------------------------------------------
 

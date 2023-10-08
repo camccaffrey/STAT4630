@@ -8,7 +8,7 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 -   [Important Links](#important-links)
 
--   [File Descriptions](#file-descriptions)
+-   [File & Directories](#files-&-directories)
 
 -   [Setup Instructions](#setup-instructions)
 
@@ -36,9 +36,9 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 ------------------------------------------------------------------------
 
-## File Descriptions
+## Files & Directories
 
-| File Name      | Description                                                                       |
+| Name           | Description                                                                       |
 |----------------|-----------------------------------------------------------------------------------|
 | .gitignore     | Tells GIT which files not to track within the project directory.                  |
 | LICENSE        | The MIT license gives express permission for users to reuse code for any purpose. |

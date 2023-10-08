@@ -76,7 +76,9 @@ In Rstudio, create a new project: *File \> New Project \> Version Control \> Git
 
 ### Loading Packages
 
-The [renv](https://posit.co/blog/renv-project-environments-for-r/) package is a dependency manager that makes R projects more isoloated, portable, and reproducible. Once you've cloned the repository, simply run `renv::restore()` to install all necessary packages. To update the list of dependencies, just run `renv:snapshot()`; this will capture all libraries used inside the project. If, for whatever reason, you need to exit this environment, navigate to *Project (STAT 4630)* > *Close Project*.
+The [renv](https://posit.co/blog/renv-project-environments-for-r/) package is a dependency manager that makes R projects more isoloated, portable, and reproducible. Once you've cloned the repository, simply run `renv::restore()` to install all necessary packages (you may need to run `renv::activate()` beforehand). To update the list of dependencies, just run `renv:snapshot()`; this will capture all libraries used inside the project. If, for whatever reason, you need to exit this environment, navigate to *Project (STAT 4630)* > *Close Project*.
+
+If you run into issues with `renv`, try using `load_dependencies.R` instead to load the necessary packages.
 
 ### Creating Local Changes
 

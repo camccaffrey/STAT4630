@@ -1,7 +1,7 @@
 
 #
-# File: data_cleaning.R
-# Description: basic data cleaning for the "cost-of-living-v2.csv" dataset
+# File: eda.R
+# Description: basic data cleaning and EDA with the "cost-of-living-v2.csv" dataset
 #
 
 # Load Dependencies ------------------------------------------------------------

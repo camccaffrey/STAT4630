@@ -1,0 +1,60 @@
+Index ,Name,Alias,Display,Class,Category,Description,Unit
+1,city,city,City,Categorical,Location,Name of the city,-
+2,country,country,Country,Categorical,Location,Name of the country,-
+3,x1,meal1,Cheap Meal,Numeric,Food,"Meal, Inexpensive Restaurant",USD
+4,x2,meal2,Mid-Meal for 2,Numeric,Food,"Meal for 2 People, Mid-range Restaurant, Three-course",USD
+5,x3,mcmeal,McMeal,Numeric,Food,McMeal at McDonalds (or Equivalent Combo Meal),USD
+6,x4,beer.rest.domestic,Domestic Beer at Restaurants,Numeric,Beverage,"Domestic Beer (0.5 liter draught, in restaurants) ",USD
+7,x5,beer.rest.imported,Imported Beer at Restraunts,Numeric,Beverage,"Imported Beer (0.33 liter bottle, in restaurants)",USD
+8,x6,coffee,Cappucinno,Numeric,Beverage,"Cappuccino (regular, in restaurants)",USD
+9,x7,soda,Coke/Pepsi,Numeric,Beverage,"Coke/Pepsi (0.33 liter bottle, in restaurants)",USD
+10,x8,water.rest,Water,Numeric,Beverage,"Water (0.33 liter bottle, in restaurants)",USD
+11,x9,milk,Milk,Numeric,Beverage,"Milk (regular), (1 liter)",USD
+12,x10,bread,Bread Loaf,Numeric,Food,Loaf of Fresh White Bread (500g),USD
+13,x11,rice,Rice,Numeric,Food,"Rice (white), (1kg)",USD
+14,x12,eggs,Eggs,Numeric,Food,Eggs (regular) (12),USD
+15,x13,cheese,Cheese,Numeric,Food,Local Cheese (1kg),USD
+16,x14,chicken,Chicken,Numeric,Food,Chicken Fillets (1kg),USD
+17,x15,beef,Beef,Numeric,Food,Beef Round (1kg) (or Equivalent Back Leg Red Meat),USD
+18,x16,apples,Apples,Numeric,Food,Apples (1kg),USD
+19,x17,bananas,Bananas,Numeric,Food,Banana (1kg),USD
+20,x18,oranges,Oranges,Numeric,Food,Oranges (1kg),USD
+21,x19,tomatoes,Tomatoes,Numeric,Food,Tomato (1kg),USD
+22,x20,potatoes,Potatoes,Numeric,Food,Potato (1kg),USD
+23,x21,onions,Onions,Numeric,Food,Onion (1kg),USD
+24,x22,lettuce,Lettuce,Numeric,Food,Lettuce (1 head),USD
+25,x23,water.market,Water,Numeric,Beverage,"Water (1.5 liter bottle, at the market)",USD
+26,x24,wine,Wine,Numeric,Beverage,"Bottle of Wine (Mid-Range, at the market)",USD
+27,x25,beer.market.domestic,Domestic Beer at Market,Numeric,Beverage,"Domestic Beer (0.5 liter bottle, at the market)",USD
+28,x26,beer.market.imported,Imported Beer at Restraunts,Numeric,Beverage,"Imported Beer (0.33 liter bottle, at the market)",USD
+29,x27,cigarettes,Cigarettes,Numeric,Cigarettes,Cigarettes 20 Pack (Marlboro),USD
+30,x28,ticket,Local Transport Ticket,Numeric,Transport,One-way Ticket (Local Transport),USD
+31,x29,pass,Monthly Pass,Numeric,Transport,Monthly Pass (Regular Price),USD
+32,x30,taxi.start,Taxi Start,Numeric,Transport,Taxi Start (Normal Tariff),USD
+33,x31,taxi.km,Taxi 1km,Numeric,Transport,Taxi 1km (Normal Tariff),USD
+34,x32,taxi.hr,Taxi 1hr,Numeric,Transport,Taxi 1hour Waiting (Normal Tariff),USD
+35,x33,gas,Gasoline,Numeric,Transport,Gasoline (1 liter),USD
+36,x34,volkswagen,Volkswagen Golf,Numeric,Transport,Volkswagen Golf 1.4 90 KW Trendline (Or Equivalent New Car),USD
+37,x35,toyota,Toyota Corolla,Numeric,Transport,Toyota Corolla Sedan 1.6l 97kW Comfort (Or Equivalent New Car),USD
+38,x36,basic,Utilities,Numeric,Utility,"Basic (Electricity, Heating, Cooling, Water, Garbage) for 85m2 Apartment",USD
+39,x37,mobile,Mobile,Numeric,Internet & Comm,1 min. of Prepaid Mobile Tariff Local (No Discounts or Plans),USD
+40,x38,internet,Internet,Numeric,Internet & Comm,"Internet (60 Mbps or More, Unlimited Data, Cable/ADSL)",USD
+41,x39,gym,Gym,Numeric,Leisure,"Fitness Club, Monthly Fee for 1 Adult",USD
+42,x40,tennis,Tennis,Numeric,Leisure,Tennis Court Rent (1 Hour on Weekend),USD
+43,x41,cinema,Cinema,Numeric,Leisure,"Cinema, International Release, 1 Seat",USD
+44,x42,preschool,Preschool,Numeric,Education,"Preschool (or Kindergarten), Full Day, Private, Monthly for 1 Child",USD
+45,x43,school,Primary School,Numeric,Education,"International Primary School, Yearly for 1 Child",USD
+46,x44,jeans,Jeans,Numeric,Clothing,1 Pair of Jeans (Levis 501 Or Similar),USD
+47,x45,dresses,Dresses,Numeric,Clothing,"1 Summer Dress in a Chain Store (Zara, H&M, …)",USD
+48,x46,nikes,Nikes,Numeric,Clothing,1 Pair of Nike Running Shoes (Mid-Range),USD
+49,x47,shoes,Business Shoes,Numeric,Clothing,1 Pair of Men Leather Business Shoes,USD
+50,x48,rent1.center,1 Bed Central Apartment,Numeric,Housing,Apartment (1 bedroom) in City Centre,USD
+51,x49,rent1.outer,1 Bed Outer Apartment,Numeric,Housing,Apartment (1 bedroom) Outside of Centre,USD
+52,x50,rent3.center,3 Bed Central Apartment,Numeric,Housing,Apartment (3 bedrooms) in City Centre,USD
+53,x51,rent3.outer,3 Bed Outer Apartment,Numeric,Housing,Apartment (3 bedrooms) Outside of Centre,USD
+54,x52,sqm.center,Central Price Per Sqm,Numeric,Housing,Price per Square Meter to Buy Apartment in City Centre,USD
+55,x53,sqm.outer,Outer Price Per Sqm,Numeric,Housing,Price per Square Meter to Buy Apartment Outside of Centre,USD
+56,x54,salary,Monthly Salary,Numeric,Income,Average Monthly Net Salary (After Tax),USD
+57,x55,mortgage,Mortgage Interest Rate,Numeric,Housing,"Mortgage Interest Rate, Yearly, for 20 Years Fixed-Rate",%
+58,data_quality,quality,Quality,Categorical,Quality,"0 for poor Numbeo data quality, else 1",-
+59,expensive,expensive,Relative Rent Cost,Categorical,Response,1 if x48 > median(x48) else 0,-

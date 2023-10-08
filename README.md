@@ -8,7 +8,7 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 -   [Important Links](#important-links)
 
--   [File & Directories](#files--directories)
+-   [Files & Directories](#files--directories)
 
 -   [Setup Instructions](#setup-instructions)
 

@@ -16,6 +16,8 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
     -   [Clone Repository](#clone-repository)
 
+    -   [Loading Packages](#loading-packages) 
+
     -   [Creating Local Changes](#creating-local-changes)
 
     -   [Pushing to GitHub](#pushing-to-github)
@@ -67,7 +69,13 @@ In Rstudio, create a new project: *File \> New Project \> Version Control \> Git
 
 -   It will be easiest if you leave "Project directory name" unchanged.
 
+### Loading Packages
+
+The [renv](https://posit.co/blog/renv-project-environments-for-r/) package is a dependency manager that makes R projects more isoloated, portable, and reproducible. Once you've cloned the repository, simply run `renv::restore()` to install all necessary packages. To update the list of dependencies, just run `renv:snapshot()`; this will capture all libraries used inside the project. If, forever reason, you want to exit this environment, navigate to *Project (STAT 4630)* > *Close Project*.
+
 ### Creating Local Changes
+
+*Note: to use version control, you must be inside of an R project. You can open the project by locating the `STAT4630.Rproj` file.*
 
 #### Pulling
 

@@ -38,6 +38,20 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 ## Files & Directories
 
+### Scripts
+| Name                | Description                                                                                           |
+|---------------------|-------------------------------------------------------------------------------------------------------|
+| `config.R`          | Contains global variables/settings that can be loaded with `source(file.path("Scripts", "config.R))"` |
+| `eda.R`             | Based off of Google Colab notebook used for Milestone 2 EDA                                           |
+| `‎Milestone3EDA.Rmd` | Ada's EDA for Milestone 3                                                                             |
+
+### Data
+| Name                    | Description                                                                                                                           |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| `cost-of-living_v2.csv` | Dataset from [Kaggle](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)                                               |
+| `data-dict.csv`         | Google Sheets [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE/edit?usp=sharing) |
+
+### Project Root
 | Name             | Description                                                                              |
 |----------------  |------------------------------------------------------------------------------------------|
 | `Data`           | Directory containing `.csv` data files                                                   |

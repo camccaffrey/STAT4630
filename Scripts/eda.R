@@ -6,6 +6,9 @@
 
 # Load Dependencies ------------------------------------------------------------
 
+# get global variables
+source(file.path("Scripts", "config.R"))
+
 # load libraries
 library(tidyverse)
 library(glue)
@@ -16,12 +19,33 @@ library(viridis)
 
 # load data
 root <- getwd()
-data <- read.csv(file.path(root, "Data", "cost-of-living_v2.csv"))
-data.dict <- read.csv(file.path(root, "Data", "data-dict.csv"))
-
-
+data <- read.csv(DATA_PATH)
+data.dict <- read.csv(DICT_PATH)
 
 # Data Cleaning ----------------------------------------------------------------
+
+# train test split
+set.seed(SEED)
+sample_data <- sample.int(nrow(data), floor(TRAIN_RATIO * nrow(data)), replace = F)
+train <- data[sample_data, ]
+test <- data[-sample_data, ]
+
+# IGNORE FOR NOW (see Piazza question @61)
+#fit <- function(df) {
+#  median.x48 <- median(df$x48, na.rm=TRUE)
+#  countries <- unique(df$country)
+#  mode.country <- names(sort(-table(df$country)))[1]
+#  list(median.x48=median.x48, countries=countries, mode.country=mode.country)
+#}
+#
+#transform <- function(df, fit_list) {
+#  df.transform <- df %>%
+#    # impute x48 value
+#    mutate(x48 = ifelse(is.na(x48), fit_list$median.x48 + rnorm(1), x48)) %>%
+#    mutate(expensive = as.factor(ifelse(x48 > fit_list$median.x48, 1, 0)),
+#           country = as.factor(ifelse(country %in% fit_list$countries, country, fit_list$mode.country)),
+#           data_quality = as.factor(data_quality))
+#}
 
 data.wide <- data %>%
   mutate(expensive = as.factor(ifelse(x48 > median(x48, na.rm=TRUE), 1, 0)),
@@ -48,10 +72,6 @@ COLS2 <- COLS1[1:5]
 
 
 # GGText Functions -------------------------------------------------------------
-
-# color constant
-RED <- "#F8766D"
-BLUE <- "#00BFC4"
 
 fColor <- function(text, color) {glue("<span style='color:{color};'>{text}</span>")}
 fSize <- function(subtitle, size) {glue("<span style='font-size:{size}pt'>{subtitle}</span>")}

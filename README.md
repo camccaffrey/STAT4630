@@ -41,7 +41,7 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 ### Scripts
 | Name                | Description                                                                         |
 |---------------------|-------------------------------------------------------------------------------------|
-| `config.R`          | Global variables that can be loaded with `source(file.path("Scripts", "config.R))"` |
+| `config.R`          | Global variables that can be loaded with `source(file.path("Scripts", "config.R"))` |
 | `eda.R`             | Based off of Google Colab notebook used for Milestone 2 EDA                         |
 | `‎Milestone3EDA.Rmd` | Ada's EDA for Milestone 3                                                           |
 

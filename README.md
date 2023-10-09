@@ -39,11 +39,11 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 ## Files & Directories
 
 ### Scripts
-| Name                | Description                                                                                           |
-|---------------------|-------------------------------------------------------------------------------------------------------|
-| `config.R`          | Contains global variables/settings that can be loaded with `source(file.path("Scripts", "config.R))"` |
-| `eda.R`             | Based off of Google Colab notebook used for Milestone 2 EDA                                           |
-| `‎Milestone3EDA.Rmd` | Ada's EDA for Milestone 3                                                                             |
+| Name                | Description                                                                         |
+|---------------------|-------------------------------------------------------------------------------------|
+| `config.R`          | Global variables that can be loaded with `source(file.path("Scripts", "config.R))"` |
+| `eda.R`             | Based off of Google Colab notebook used for Milestone 2 EDA                         |
+| `‎Milestone3EDA.Rmd` | Ada's EDA for Milestone 3                                                           |
 
 ### Data
 | Name                    | Description                                                                                                                           |
@@ -55,7 +55,7 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 | Name             | Description                                                                              |
 |----------------  |------------------------------------------------------------------------------------------|
 | `Data`           | Directory containing `.csv` data files                                                   |
-| `Scripts`        | Directory containing `.R` scripts                                                        |
+| `Scripts`        | Directory containing `.R` and `.Rmd`scripts                                              |
 | `renv`           | Directory for our "reproducible environment" (see [Loading Packages](#loading-packages)) |
 | `.Rprofile`      | Configuration file for our R environment                                                 |
 | `.gitignore`     | Tells GIT which files not to track within the project directory                          |

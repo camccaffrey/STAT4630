@@ -18,7 +18,6 @@ library(GGally)
 library(viridis)
 
 # load data
-root <- getwd()
 data <- read.csv(DATA_PATH)
 data.dict <- read.csv(DICT_PATH)
 

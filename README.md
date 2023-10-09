@@ -26,30 +26,30 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
 ## Important Links
 
--   [Google Drive Project Folder](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z?usp=drive_link)
+-   [Google Drive Project Folder](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z)
 
--   [Schedule & Contact Info](https://docs.google.com/spreadsheets/d/12F8hKwLkV5tnXcsUE9qrD-ibVNVBkb0jPGl12eB_yXY/edit?usp=sharing)
+-   [Schedule & Contact Info](https://docs.google.com/spreadsheets/d/12F8hKwLkV5tnXcsUE9qrD-ibVNVBkb0jPGl12eB_yXY)
 
 -   [Kaggle Dataset](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)
 
--   [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE/edit?usp=sharing)
+-   [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE)
 
 ------------------------------------------------------------------------
 
 ## Files & Directories
 
 ### Scripts
-| Name                | Description                                                                         |
-|---------------------|-------------------------------------------------------------------------------------|
-| [`config.R`](Scripts/config.R)          | Global variables that can be loaded with `source(file.path("Scripts", "config.R"))` |
-| `eda.R`             | Based off of Google Colab notebook used for Milestone 2 EDA                         |
-| `‎Milestone3EDA.Rmd` | Ada's EDA for Milestone 3                                                           |
+| Name                                             | Description                                                                         |
+|--------------------------------------------------|-------------------------------------------------------------------------------------|
+| [`config.R`](Scripts/config.R)                   | Global variables that can be loaded with `source(file.path("Scripts", "config.R"))` |
+| [`eda.R`](Scripts/eda.R)                         | Based off of Google Colab notebook used for Milestone 2 EDA                         |
+| [`‎Milestone3EDA.Rmd`](Scripts/Milestone3EDA.Rmd) | Ada's EDA for Milestone 3                                                           |
 
 ### Data
-| Name                    | Description                                                                                                                           |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| `cost-of-living_v2.csv` | Dataset from [Kaggle](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)                                               |
-| `data-dict.csv`         | Google Sheets [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE/edit?usp=sharing) |
+| Name                                                 | Description                                                                                             |
+|------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [`cost-of-living_v2.csv`](Data/cost-of-living_v2.csv) | [Kaggle Dataset](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)                     |
+| [`data-dict.csv`](Data/data-dict.csv)                 | [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE) |
 
 ### Project Root
 | Name             | Description                                                                              |

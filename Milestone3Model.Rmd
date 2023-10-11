@@ -7,7 +7,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-list.of.packages  =  c("ROCR","tidyverse", "GGally", "rlang", "ggtext", "viridis", "glue", "countrycode", "MASS", "klaR", "ICS")
+list.of.packages  =  c("ipred","ROCR","tidyverse", "GGally", "rlang", "ggtext", "viridis", "glue", "countrycode", "MASS", "klaR", "ICS")
 
 # check and install packages
 new.packages  =  list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -142,5 +142,50 @@ lda_rates<-ROCR::prediction(lda_preds$posterior[,2], test$Expensive)
 lda_roc_result<-ROCR::performance(lda_rates,measure="tpr", x.measure="fpr")
 plot(lda_roc_result, main="ROC Curve for LDA")
 ```
+## ii)
+In this subsection, we find the AOC of the previous fitted Logistic Regression and LDA. 
+```{r}
+lr_auc<-ROCR::performance(lr_rates, measure = "auc")
+lr_AUC<-lr_auc@y.values
+cat("The AUC of logistic regression is", lr_AUC[[1]], "\n")
+lda_auc<-ROCR::performance(lda_rates, measure = "auc")
+lda_AUC<-lda_auc@y.values
+cat("The AUC of LDA is", lda_AUC[[1]], "\n")
+```
 
+## iii)
+In real life, a testset isn't readily accessible. Thus, we perform Cross-Validation on the training data as if we don't have the test data. 
+```{r}
+set.seed(4630)
+LR5CV<-boot::cv.glm(train,lr_train, K=5) 
+cat("The test error of 5-fold CV of Logistic Regression is", LR5CV$delta[1], "\n")
+LR10CV<-boot::cv.glm(train,lr_train, K=10) 
+cat("The test error of 10-fold CV of Logistic Regression is", LR10CV$delta[1], "\n")
 
+cv<- function(object, newdata){
+return(predict(object, newdata = newdata)$class)
+}
+set.seed(4630)
+LDA5CV<-ipred::errorest(Expensive ~ ., data=train, model=lda,
+estimator="cv",
+est.para=control.errorest(k=5),
+predict=cv)$err
+cat("The test error of 5-fold CV of LDA is", LDA5CV, "\n")
+LDA10CV<-ipred::errorest(Expensive ~ ., data=train, model=lda,
+estimator="cv",
+est.para=control.errorest(k=10),
+predict=cv)$err
+cat("The test error of 10-fold CV of LDA is", LDA10CV, "\n")
+
+```
+
+## iv)
+We report error rate on true test set here. 
+```{r}
+label<-as.numeric(lr_preds>0.8)
+lr_acc_test<-mean(test$Expensive == label)
+cat("The test error of logistic regression is", 1-lr_acc_test, "\n")
+lda_acc_test<-mean(test$Expensive == lda_preds$class)
+cat("The test error of LDA is", 1-lda_acc_test, "\n")
+```
+We can see that the performance of Logistic Regression and LDA are quite similiar. 

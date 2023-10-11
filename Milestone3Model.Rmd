@@ -1,0 +1,146 @@
+---
+title: "Milestone3Model.Rmd"
+author: "Group 13"
+date: "2023-10-10"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+list.of.packages  =  c("ROCR","tidyverse", "GGally", "rlang", "ggtext", "viridis", "glue", "countrycode", "MASS", "klaR", "ICS")
+
+# check and install packages
+new.packages  =  list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+# load packages
+lapply(list.of.packages, require, character.only = TRUE)
+```
+
+# a Data Preprocessing 
+Since our raw response variable is the "cost of a 1-bedroom apartment in the center of a city", which is a **continuous numeric** variable, our group decides to first transform it into a **binary categorical** variable "expensive". A factor level 1 is corresponding to expensive, and a level 0 suggests inexpensive. We also remove any observation that contains a N/A value. 
+```{r}
+data = read.csv("Data/cost-of-living_v2.csv")
+cost_of_living = data %>% rename(CheapMeal = x1,
+                                 meal1 = x2,
+                                 meal2 = x2,
+                                 mcmeal = x3,
+                                 beer.rest.domestic = x4,
+                                 beer.rest.imported = x5, 
+                                 coffee = x6,
+                                 soda = x7,
+                                 water.rest = x8,
+                                 milk = x9,
+                                 bread = x10,
+                                 rice = x11,
+                                 eggs = x12,
+                                 cheese = x13,
+                                 chicken = x14,
+                                 beef = x15,
+                                 apples = x16,
+                                 bananas = x17,
+                                 oranges = x18,
+                                 tomatoes = x19,
+                                 potatoes = x20,
+                                 onions = x21,
+                                 lettuce = x22,
+                                 water.market = x23,
+                                 wine = x24,
+                                 beer.market.domestic = x25,
+                                 beer.market.imported = x26,
+                                 cigarettes = x27,
+                                 ticket = x28,
+                                 pass = x29,
+                                 taxi.start = x30,
+                                 taxi.km = x31,
+                                 taxi.hr = x32,
+                                 gas = x33,
+                                 volkswagen = x34,
+                                 toyota = x35,
+                                 basic = x36,
+                                 mobile = x37,
+                                 internet = x38,
+                                 gym = x39,
+                                 tennis = x40,
+                                 cinema = x41,
+                                 preschool = x42,
+                                 school = x43,
+                                 jeans = x44,
+                                 dresses = x45,
+                                 nikes = x46,
+                                 shoes = x47,
+                                 rent1.center = x48,
+                                 rent1.outer = x49,
+                                 rent3.center = x50,
+                                 rent3.outer = x51,
+                                 sqm.center = x52,
+                                 sqm.outer = x53,
+                                 salary = x54,
+                                 mortgage = x55,
+                                 quality = data_quality)
+middle = median(cost_of_living$rent1.center, na.rm=T)
+cost_of_living = cost_of_living %>% mutate(expensive = ifelse(rent1.center>=middle, "1", "0"))
+cost_of_living$expensive <- as.factor(cost_of_living$expensive)
+cleaned_data <- na.omit(cost_of_living)
+cleaned_data$expensive
+```
+
+# b Variable Selection
+As our dataset contains 58 predictors, it is not feasible to fit a model with all of these predictors because of the multicollinearity and the high model variance. Thus, based on our EDA, our group selects the most promising predictors to fit our model. We chose predictors based on two criteria: **1) Representative of one group of predictors** and **2) Based on the boxplot, there is a significant different distribution between two categories of our response variable **.
+\newline
+
+As a result, our group selects Cheap Meal (x1), Bread Loaf (x10), Eggs (x12), Wine (x24), Gasoline(x33), Utilities (x36), Cinema (x41), and Monthly Salary (x54) to be our preliminary predictors. 
+```{r}
+cost_of_living_final <- cleaned_data %>%
+  rename(
+    Expensive=expensive,
+    CheapMeal=CheapMeal,
+    BreadLoaf=bread,
+    Eggs=eggs,
+    Wine=wine,
+    Gasoline=gas,
+    Utilities=basic,
+    Cinema=cinema,
+    MonthlySalary=salary
+  ) %>%
+  dplyr::select(
+    Expensive,
+    CheapMeal,
+    BreadLoaf,
+    Eggs,
+    Wine,
+    Gasoline,
+    Utilities,
+    Cinema,
+    MonthlySalary
+  )
+```
+By the end of part b, we have our final dataset which is well-labeled and ready to be used for Model building. 
+
+# c) Compare LDA and Logistic regression 
+We first do the train-test split for the final dataset: we split it to be 70% training examples and 30% testing examples. We use 4630 to be our seed. 
+```{r}
+set.seed(4630)
+sample.data<-sample.int(nrow(cost_of_living_final), floor(.7*nrow(cost_of_living_final)), replace = F) 
+train<-cost_of_living_final[sample.data, ] 
+test<-cost_of_living_final[-sample.data, ]
+```
+
+## i)
+In this subsection, we first fit the logistic regression model and plot the associated ROC curve.Then we fit the LDA model and plot the associated ROC curve.
+```{r}
+lr_train<-glm(Expensive~., family=binomial, data=train)
+lr_preds<-predict(lr_train,newdata=test, type="response")
+lr_rates<-ROCR::prediction(lr_preds, test$Expensive)
+lr_roc_result<-ROCR::performance(lr_rates,measure="tpr", x.measure="fpr")
+plot(lr_roc_result, main="ROC Curve for Logistic Regression")
+```
+```{r}
+lda_train<-MASS::lda(Expensive~., data=train)
+lda_preds<-predict(lda_train,test)
+lda_rates<-ROCR::prediction(lda_preds$posterior[,2], test$Expensive)
+lda_roc_result<-ROCR::performance(lda_rates,measure="tpr", x.measure="fpr")
+plot(lda_roc_result, main="ROC Curve for LDA")
+```
+
+

@@ -51,6 +51,7 @@ Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 |----------------------|------------------------------------------------------------------------------------------|
 | [`Data`](Data)       | Directory containing `.csv` and `.rds` data files                                        |
 | [`Scripts`](Scripts) | Directory containing `.R` and `.Rmd`scripts                                              |
+| [`Output`](Output)   | Plots generated with `eda.R`                                                             |
 | `renv`               | Directory for our "reproducible environment" (see [Loading Packages](#loading-packages)) |
 | `.Rprofile`          | Configuration file for our R environment                                                 |
 | `.gitignore`         | Tells GIT which files not to track within the project directory                          |

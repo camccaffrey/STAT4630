@@ -4,12 +4,25 @@
 # Description: configuration file
 #
 
-# file paths (OS independent)
-ROOT <- getwd() # STAT4630 folder
+# File Paths (OS Independent) --------------------------------------------------
+
+# set root (should be STAT4630 folder)
+ROOT <- getwd()
+
+# set paths to data
 DATA_PATH <- file.path(ROOT, "Data", "cost-of-living_v2.csv")
 DICT_PATH <- file.path(ROOT, "Data", "data-dict.csv")
 
-# required packages (alternative to renv)
+TRAIN_PATH <- file.path(ROOT, "Data", "train.rds")
+TEST_PATH <- file.path(ROOT, "Data", "test.rds")
+
+TRAINLONG_PATH <- file.path(ROOT, "Data", "train-long.rds")
+TESTLONG_PATH <- file.path(ROOT, "Data", "test-long.rds")
+
+
+# Packages (RENV Alternative) --------------------------------------------------
+
+# required packages
 REQUIREMENTS <- c(
   "tidyverse",  # collection of data science packages
   "GGally",     # ggplot extension that helps combine objects
@@ -25,10 +38,12 @@ load_requirements <- function() {
   # check and install packages
   new.packages <- REQUIREMENTS[!(REQUIREMENTS %in% installed.packages()[,"Package"])]
   if(length(new.packages)) install.packages(new.packages)
-
   # load packages
   lapply(REQUIREMENTS, require, character.only = TRUE)
 }
+
+
+# Test / Train Split -----------------------------------------------------------
 
 # random seed for reproducibility
 SEED <- 4630
@@ -37,14 +52,11 @@ SEED <- 4630
 TRAIN_RATIO <- 0.7
 TEST_RATIO <- 0.3
 
+
+# Variables of Interest --------------------------------------------------------
+
 # response variable name
 RESPONSE <- "expensive"
 
 # predictor variable names
 #PREDICTORS <- c()
-
-
-
-# themes
-RED <- "#F8766D"
-BLUE <- "#00BFC4"

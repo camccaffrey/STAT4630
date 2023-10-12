@@ -1,7 +1,7 @@
 
 #
 # File: eda.R
-# Description: basic data cleaning and EDA with the "cost-of-living-v2.csv" dataset
+# Description: basic EDA, built off of Milestone 2
 #
 
 # Load Dependencies ------------------------------------------------------------
@@ -18,79 +18,43 @@ library(GGally)
 library(viridis)
 
 # load data
-data <- read.csv(DATA_PATH)
 data.dict <- read.csv(DICT_PATH)
+train <- readRDS(TRAIN_PATH)
+train.long <- readRDS(TRAINLONG_PATH)
 
-# Data Cleaning ----------------------------------------------------------------
+# load themes
+source(file.path("Scripts", "themes.R"))
 
-# train test split
-set.seed(SEED)
-sample_data <- sample.int(nrow(data), floor(TRAIN_RATIO * nrow(data)), replace = F)
-train <- data[sample_data, ]
-test <- data[-sample_data, ]
-
-# IGNORE FOR NOW (see Piazza question @61)
-#fit <- function(df) {
-#  median.x48 <- median(df$x48, na.rm=TRUE)
-#  countries <- unique(df$country)
-#  mode.country <- names(sort(-table(df$country)))[1]
-#  list(median.x48=median.x48, countries=countries, mode.country=mode.country)
-#}
-#
-#transform <- function(df, fit_list) {
-#  df.transform <- df %>%
-#    # impute x48 value
-#    mutate(x48 = ifelse(is.na(x48), fit_list$median.x48 + rnorm(1), x48)) %>%
-#    mutate(expensive = as.factor(ifelse(x48 > fit_list$median.x48, 1, 0)),
-#           country = as.factor(ifelse(country %in% fit_list$countries, country, fit_list$mode.country)),
-#           data_quality = as.factor(data_quality))
-#}
-
-data.wide <- data %>%
-  mutate(expensive = as.factor(ifelse(x48 > median(x48, na.rm=TRUE), 1, 0)),
-         country = as.factor(country),
-         data_quality = as.factor(data_quality)) %>%
-  filter(!is.na(expensive))
-
-data.long <- data.wide %>%
-  pivot_longer(!c(city, country, expensive, data_quality),
-               names_to = "type", values_to = "cost") %>%
-  filter(!is.na(cost))
-
-# create aliases
-aliases <- setNames(data.dict$Display, colnames(data.wide))
-rev.aliases <- setNames(colnames(data.wide), data.dict$Display)
-
+# create display names
+display <- setNames(data.dict$Display, data.dict$Alias)
+rev.display <- setNames(data.dict$Alias, data.dict$Display)
 
 
 # Variables of Interest --------------------------------------------------------
 
-COLS1 <- c("x33", "x36", "x41", "x1", "x9", "x10", "x12", "x17", "x24", "x54")
+# original columns (33 -> "x33")
+x <- c(33, 36, 41, 1, 9, 10, 12, 17, 24, 54)
+
+# names of columns
+COLS1 <- colnames(train)[x+2]
 COLS2 <- COLS1[1:5]
-
-
-
-# GGText Functions -------------------------------------------------------------
-
-fColor <- function(text, color) {glue("<span style='color:{color};'>{text}</span>")}
-fSize <- function(subtitle, size) {glue("<span style='font-size:{size}pt'>{subtitle}</span>")}
-createTitle <- function(title, subtitle) {paste(title, "  \n", fSize(subtitle, 11), sep="")}
-
 
 
 # Scatterplot Matrix -----------------------------------------------------------
 
-# custom theme
-scatter.theme <- theme_bw() +
-  theme(plot.title = element_markdown(lineheight = 1.1, hjust=0.5))
-
 # custom title
-title <- "**Scatterplot Matrix of Commodity Prices**"
-subtitle <- glue("For cities that fall {above} and {below} the the median average rent for a 1-bedroom apartment",
-                 above = fColor("*above*", RED),
-                 below = fColor("*below*", BLUE))
+scatter.title <- createTitle(
+  title = "**Scatterplot Matrix of Commodity Prices**",
+  
+  subtitle = paste(
+    "For cities that fall",
+    fColor("*above*", RED),
+    "and",
+    fColor("*below*", BLUE),
+    "the the median average rent for a 1-bedroom apartment"
+  )
+)
 
-scatter.title <- createTitle(title, subtitle)
 
 # define content of each scatterplot
 upperfun <- function(data, mapping) {
@@ -113,7 +77,7 @@ upperfun <- function(data, mapping) {
 }
 
 # create plot
-plot.scatter <- data.wide %>%
+plot.scatter <- train %>%
   # data cleaning
   select(all_of(COLS2), expensive) %>%
   na.omit() %>%
@@ -121,7 +85,7 @@ plot.scatter <- data.wide %>%
   ggpairs(columns = 1:5, aes(colour = expensive, alpha = 0.4),
           upper = list(continuous = wrap(upperfun)),
           lower = "blank",
-          labeller = as_labeller(aliases)) +
+          labeller = as_labeller(display)) +
   scatter.theme + labs(title = scatter.title)
 
 plot.scatter
@@ -130,30 +94,27 @@ plot.scatter
 
 # Rent Box Plots ---------------------------------------------------------------
 
-# custom theme
-box.theme <- theme_bw() +
-  theme(plot.title = element_markdown(lineheight = 1.1, hjust=0.5),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        axis.title = element_blank(),
-        panel.grid.major.x = element_blank())
-
 # custom title
-title <- "**Boxplot of Key Commodity Prices**"
-subtitle <- glue("For cities that fall {above} and {below} the the median average rent for a 1-bedroom apartment",
-                 above = fColor("*above*", RED),
-                 below = fColor("*below*", BLUE))
-
-box.title <- createTitle(title, subtitle)
+box.title <- createTitle(
+  title = "**Boxplot of Key Commodity Prices**",
+  
+  subtitle = paste(
+    "For cities that fall",
+    fColor("*above*", RED),
+    "and",
+    fColor("*below*", BLUE),
+    "the the median average rent for a 1-bedroom apartment"
+  )
+)
 
 
 # create plot
-plot.box <- data.long %>%
+plot.box <- train.long %>%
   # data cleaning
   filter(type %in% COLS1) %>%
   # create plot
   ggplot(aes(x=expensive, y=cost, fill = expensive)) +
-  facet_wrap(vars(type), ncol = 5, scales = "free_y", labeller = as_labeller(aliases)) +
+  facet_wrap(vars(type), ncol = 5, scales = "free_y", labeller = as_labeller(display)) +
   stat_boxplot(geom = "errorbar", width = 0.3) +
   geom_boxplot(width = 0.5, show.legend = FALSE,  outlier.shape = 1) +
   box.theme + labs(title = box.title)
@@ -164,28 +125,19 @@ plot.box
 
 # Country Box Plots ------------------------------------------------------------
 
-# get top countries
-t <- sort(table(data$country), decreasing=TRUE)
-topCountries <- names(t[t > 50])
-topCountries
-
-# create custom theme
-country.theme <- theme_bw() +
-  theme(plot.title = element_markdown(lineheight = 1.1, hjust=0.5),
-        axis.text.x = element_text(angle = -45, hjust=0),
-        panel.grid.major.x = element_blank())
-
 # create custom title
-country.title = glue("**Distribution of Average Monthly Salary by Country**")
+country.title = "**Distribution of Average Monthly Salary by Country**"
 
 # create plot
-plot.country <- data.wide %>%
+plot.country <- train %>%
   # data cleaning
   group_by(country) %>%
-  filter(country %in% topCountries) %>%
+  filter(country != "Other") %>%
   na.omit() %>%
   # create plot
-  ggplot(aes(x=reorder(country, -x54, median), y=x54, fill = reorder(country, x54, median))) +
+  ggplot(aes(x=reorder(country, -salary, median),
+             y=salary,
+             fill = reorder(country, salary, median))) +
   stat_boxplot(geom = "errorbar", width = 0.3) +
   geom_boxplot(width = 0.5, show.legend = FALSE,  outlier.shape = 1) +
   scale_fill_viridis(discrete=TRUE) +

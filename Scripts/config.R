@@ -60,3 +60,9 @@ RESPONSE <- "expensive"
 
 # predictor variable names
 #PREDICTORS <- c()
+
+
+# Other ------------------------------------------------------------------------
+
+# resolution of graphics (72-96 suitable for GitHub)
+DPI <- 96

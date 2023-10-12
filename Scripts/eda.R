@@ -16,6 +16,7 @@ library(ggtext)
 library(rlang)
 library(GGally)
 library(viridis)
+library(grid)
 
 # load data
 data.dict <- read.csv(DICT_PATH)
@@ -147,3 +148,14 @@ plot.country <- train %>%
 plot.country
 
 
+# Save Plots -------------------------------------------------------------------
+
+# define paths
+path.scatter <- file.path(ROOT, "Output", "scatter-matrix.png")
+path.box <- file.path(ROOT, "Output", "boxplots.png")
+path.country <- file.path(ROOT, "Output", "countries.png")
+
+# default DPI resolution in config.R
+ggsave(path.scatter, plot.scatter, width=7, height=7, dpi=200)
+ggsave(path.box, plot.box, width=7, height=7, dpi=200)
+ggsave(path.country, plot.country, width=7, height=7, dpi=200)

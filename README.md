@@ -1,12 +1,13 @@
 # STAT4630
-
-Group 13's Repository for STAT 4630: Statistical Machine Learning
+Group 13's Repository for *STAT 4630: Statistical Machine Learning*
+>[Google Drive](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z) • 
+[Schedule](https://docs.google.com/spreadsheets/d/12F8hKwLkV5tnXcsUE9qrD-ibVNVBkb0jPGl12eB_yXY) • 
+[Kaggle](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living) • 
+[Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE)
 
 ------------------------------------------------------------------------
 
 ## Table of Contents
-
--   [Important Links](#important-links)
 
 -   [Files & Directories](#files--directories)
 
@@ -16,23 +17,11 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 
     -   [Clone Repository](#clone-repository)
 
-    -   [Loading Packages](#loading-packages) 
-
+    -   [Loading Packages](#loading-packages)
+    
     -   [Creating Local Changes](#creating-local-changes)
 
     -   [Pushing to GitHub](#pushing-to-github)
-
-------------------------------------------------------------------------
-
-## Important Links
-
--   [Google Drive Project Folder](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z)
-
--   [Schedule & Contact Info](https://docs.google.com/spreadsheets/d/12F8hKwLkV5tnXcsUE9qrD-ibVNVBkb0jPGl12eB_yXY)
-
--   [Kaggle Dataset](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)
-
--   [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE)
 
 ------------------------------------------------------------------------
 

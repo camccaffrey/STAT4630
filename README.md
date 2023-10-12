@@ -42,14 +42,20 @@ Group 13's Repository for STAT 4630: Statistical Machine Learning
 | Name                                             | Description                                                                         |
 |--------------------------------------------------|-------------------------------------------------------------------------------------|
 | [`config.R`](Scripts/config.R)                   | Global variables that can be loaded with `source(file.path("Scripts", "config.R"))` |
+| [`data_cleaning.R`](Scripts/data_cleaning.R)     | Splits and transforms data. Outputs: `train.rds`, `test.rds`, etc.                  |
 | [`eda.R`](Scripts/eda.R)                         | Based off of Google Colab notebook used for Milestone 2 EDA                         |
+| [`themes.R`](Scripts/themes.R)                   | Stores custom themes and related variables + functions                              |
 | [`‎Milestone3EDA.Rmd`](Scripts/Milestone3EDA.Rmd) | Ada's EDA for Milestone 3                                                           |
 
 ### Data
-| Name                                                 | Description                                                                                             |
-|------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| Name                                                  | Description                                                                                            |
+|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
 | [`cost-of-living_v2.csv`](Data/cost-of-living_v2.csv) | [Kaggle Dataset](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living)                     |
 | [`data-dict.csv`](Data/data-dict.csv)                 | [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE) |
+| [`train.rds`](Data/train.rds)                         | Transformed training data, created with `data_cleaning.R`                                              |
+| [`test.rds`](Data/test.rds)                           | Transformed testing data, created with `data_cleaning.R`                                               |
+| [`train-long.rds`](Data/train-long.rds)               | Long version of `train.rds`                                                                            |
+| [`testlong.rds`](Data/test-long.rds)                  | Long version of `testing.rds`                                                                          |
 
 ### Project Root
 | Name             | Description                                                                              |

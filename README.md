@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # STAT4630
 Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 >[Google Drive](https://drive.google.com/drive/folders/188y8UtK8QoEAMdiTjjkhtXyP0BsFcb4z) • 
@@ -39,7 +34,7 @@ Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 | [`data_cleaning.R`](Scripts/data_cleaning.R)     | Splits and transforms data. Outputs: `train.rds`, `test.rds`, etc.                  |
 | [`eda.R`](Scripts/eda.R)                         | Based off of Google Colab notebook used for Milestone 2 EDA                         |
 | [`themes.R`](Scripts/themes.R)                   | Stores custom themes and related variables + functions                              |
-| [`Milestone3EDA.Rmd`](Scripts/Milestone3EDA.Rmd) | Ada's EDA for Milestone 3                                                           |
+| [`‎Milestone3EDA.Rmd`](Scripts/Milestone3EDA.Rmd) | Ada's EDA for Milestone 3                                                           |
 
 ### Data
 | Name                                                  | Description                                                                                            |

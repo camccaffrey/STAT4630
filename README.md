@@ -46,6 +46,11 @@ Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 | [`train-long.rds`](Data/train-long.rds)               | Long version of `train.rds`                                                                            |
 | [`testlong.rds`](Data/test-long.rds)                  | Long version of `testing.rds`                                                                          |
 
+### Output
+| [`countries.png`](Output/countries.png)      | [`scatter-matrix.png`](Output/scatter-matrix.png) | [`boxplots.png`](Output/boxplots.png)       |
+|----------------------------------------------|---------------------------------------------------|---------------------------------------------|
+| <img src="Output/countries.png" width="200"> | <img src="Output/scatter-matrix.png" width="200"> | <img src="Output/boxplots.png" width="200"> |
+
 ### Project Root
 | Name                 | Description                                                                              |
 |----------------------|------------------------------------------------------------------------------------------|

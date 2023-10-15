@@ -65,7 +65,7 @@ x <- c(33, 36, 41, 1, 9, 10, 12, 17, 24, 54)
 
 # names of columns
 COLS1 <- colnames(train)[x+2]
-COLS2 <- COLS1[1:5]
+COLS2 <- COLS1[c(3, 4, 6, 7, 10)]
 
 
 # Scatterplot Matrix -----------------------------------------------------------
@@ -108,7 +108,7 @@ upperfun <- function(data, mapping) {
 # create plot
 plot.scatter <- train %>%
   # data cleaning
-  select(all_of(COLS2), expensive) %>%
+  dplyr::select(all_of(COLS2), expensive) %>%
   na.omit() %>%
   # create scatterplot matrix
   ggpairs(columns = 1:5, aes(colour = expensive, alpha = 0.4),

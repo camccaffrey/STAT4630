@@ -8,7 +8,7 @@ Index ,Name,Alias,Display,Class,Category,Description,Unit
 7,x5,beer.rest.imported,Imported Beer at Restraunts,Numeric,Beverage,"Imported Beer (0.33 liter bottle, in restaurants)",USD
 8,x6,coffee,Cappucinno,Numeric,Beverage,"Cappuccino (regular, in restaurants)",USD
 9,x7,soda,Coke/Pepsi,Numeric,Beverage,"Coke/Pepsi (0.33 liter bottle, in restaurants)",USD
-10,x8,water.rest,Water,Numeric,Beverage,"Water (0.33 liter bottle, in restaurants)",USD
+10,x8,water.rest,Water at Restaurants,Numeric,Beverage,"Water (0.33 liter bottle, in restaurants)",USD
 11,x9,milk,Milk,Numeric,Beverage,"Milk (regular), (1 liter)",USD
 12,x10,bread,Bread Loaf,Numeric,Food,Loaf of Fresh White Bread (500g),USD
 13,x11,rice,Rice,Numeric,Food,"Rice (white), (1kg)",USD
@@ -23,10 +23,10 @@ Index ,Name,Alias,Display,Class,Category,Description,Unit
 22,x20,potatoes,Potatoes,Numeric,Food,Potato (1kg),USD
 23,x21,onions,Onions,Numeric,Food,Onion (1kg),USD
 24,x22,lettuce,Lettuce,Numeric,Food,Lettuce (1 head),USD
-25,x23,water.market,Water,Numeric,Beverage,"Water (1.5 liter bottle, at the market)",USD
+25,x23,water.market,Water at Market,Numeric,Beverage,"Water (1.5 liter bottle, at the market)",USD
 26,x24,wine,Wine,Numeric,Beverage,"Bottle of Wine (Mid-Range, at the market)",USD
 27,x25,beer.market.domestic,Domestic Beer at Market,Numeric,Beverage,"Domestic Beer (0.5 liter bottle, at the market)",USD
-28,x26,beer.market.imported,Imported Beer at Restraunts,Numeric,Beverage,"Imported Beer (0.33 liter bottle, at the market)",USD
+28,x26,beer.market.imported,Imported Beer at Market,Numeric,Beverage,"Imported Beer (0.33 liter bottle, at the market)",USD
 29,x27,cigarettes,Cigarettes,Numeric,Cigarettes,Cigarettes 20 Pack (Marlboro),USD
 30,x28,ticket,Local Transport Ticket,Numeric,Transport,One-way Ticket (Local Transport),USD
 31,x29,pass,Monthly Pass,Numeric,Transport,Monthly Pass (Regular Price),USD

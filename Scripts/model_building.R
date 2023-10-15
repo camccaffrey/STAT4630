@@ -69,7 +69,7 @@ ICS::mvnorm.skew.test(cheap[, 2:9])
 ICS::mvnorm.skew.test(expensive[, 2:9])
 
 LDA <- MASS::lda(expensive ~., data=train.sub)
-summary(LDA)
+LDA
 
 LDA.preds <- predict(LDA, test.sub)
 

@@ -17,6 +17,7 @@ library(rlang)
 library(GGally)
 library(viridis)
 library(grid)
+library(corrplot)
 
 # load data
 data.dict <- read.csv(DICT_PATH)
@@ -29,6 +30,100 @@ source(file.path("Scripts", "themes.R"))
 # create display names
 display <- setNames(data.dict$Display, data.dict$Alias)
 rev.display <- setNames(data.dict$Alias, data.dict$Display)
+
+
+# Correlation Matrix -----------------------------------------------------------
+
+# M.high <- train %>%
+#   filter(expensive == 1) %>%
+#   rename(all_of(rev.display)) %>%
+#   select(where(is.numeric)) %>%
+#   na.omit() %>%
+#   cor()
+# 
+# M.low <- train %>%
+#   filter(expensive == 0) %>%
+#   rename(all_of(rev.display)) %>%
+#   select(where(is.numeric)) %>%
+#   na.omit() %>%
+#   cor()
+# 
+# m.combine <- function(m1, m2, order) {
+#   if (nrow(m1) != ncol(m1) || nrow(m2) != ncol(m2) || nrow(m1) != nrow(m2)) {
+#     stop("Both matrices must be square and have the same dimensions.")
+#   }
+#   
+#   m1 <- abs(m1[, order])
+#   m2 <- -abs(m2[, order])
+#   
+#   n <- nrow(m1)
+#   names <- colnames(m1)
+#   
+#   comb <- matrix(NA, nrow = n, ncol = n)
+#   comb[lower.tri(comb, diag = TRUE)] <- m1[lower.tri(m1, diag = TRUE)]
+#   comb[upper.tri(comb, diag = TRUE)] <- m2[upper.tri(m2, diag = TRUE)]
+#   
+#   colnames(comb) <- names
+#   rownames(comb) <- names
+#   return(comb)
+# }
+
+corr.train <- train %>%
+  rename(all_of(rev.display)) %>%
+  select(where(is.numeric)) %>%
+  na.omit() %>%
+  cor()
+
+path.corr <- file.path(ROOT, "Output", "corr.png")
+
+png(path.corr, width=7, height=7, units="in", res=200)
+print(corrplot(corr.train,
+               #title = "Correlation Matrix of Commodity Prices",
+               method = "circle",
+               type = "lower",
+               diag = TRUE,
+               order = 'FPC',
+               outline = FALSE,
+               col = COL2("PuOr", 10),
+               tl.col = "black",
+               tl.srt = 45,
+               tl.cex = 0.4))
+title("Correlation Matrix of Commodity Prices", cex.main=0.8)
+dev.off()
+
+# my.order <- unique(plot.corr.train$corrPos$xName)
+# M <- m.combine(M.high, M.low, my.order)
+# 
+# plot.corr <- corrplot(M,
+#                       title = "Correlation Matrix of Commodity Prices",
+#                       method = "circle",
+#                       type = "full",
+#                       diag = FALSE,
+#                       #order = 'alpha',
+#                       outline = FALSE,
+#                       col = COL2("PuOr", 10),
+#                       tl.col = "black",
+#                       tl.srt = 45,
+#                       tl.cex = 0.4)
+# 
+# plot.corr
+# 
+# 
+# plot.diff <- corrplot(abs(M.high) - abs(M.low),
+#                       title = "Correlation Matrix of Commodity Prices",
+#                       method = "circle",
+#                       type = "full",
+#                       diag = FALSE,
+#                       order = 'FPC',
+#                       outline = FALSE,
+#                       col = COL2("PuOr", 10),
+#                       tl.col = "black",
+#                       tl.srt = 45,
+#                       tl.cex = 0.4)
+# 
+# 
+# 
+# plot.diff
 
 
 # Variables of Interest --------------------------------------------------------

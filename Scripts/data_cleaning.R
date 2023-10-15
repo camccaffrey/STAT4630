@@ -37,7 +37,7 @@ fit <- function(df) {
   
   # countries
   country.table <- sort(table(df$country), decreasing=TRUE)
-  countries <- names(country.table[country.table > 50])
+  countries <- names(country.table[country.table > 50])[1]
   country.missing <- "Other"
   
   # return list
@@ -54,8 +54,7 @@ transform <- function(df, fit_list) {
     
     # mutate categorical variables
     mutate(expensive = as.factor(ifelse(x48 > fit_list$median.x48, 1, 0)),
-           country = as.factor(ifelse(country %in% fit_list$countries,
-                                      country, fit_list$country.missing)),
+           usa = as.factor(ifelse(country %in% fit_list$countries, 1, 0)),
            data_quality = as.factor(data_quality))
   
   

@@ -58,3 +58,4 @@ Index ,Name,Alias,Display,Class,Category,Description,Unit
 57,x55,mortgage,Mortgage Interest Rate,Numeric,Housing,"Mortgage Interest Rate, Yearly, for 20 Years Fixed-Rate",%
 58,data_quality,quality,Quality,Categorical,Quality,"0 for poor Numbeo data quality, else 1",-
 59,expensive,expensive,Relative Rent Cost,Categorical,Response,1 if x48 > median(x48) else 0,-
+60,usa,usa,United States,Categorical,Country,"""United States"" or ""Other""",-

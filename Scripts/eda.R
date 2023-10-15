@@ -34,40 +34,6 @@ rev.display <- setNames(data.dict$Alias, data.dict$Display)
 
 # Correlation Matrix -----------------------------------------------------------
 
-# M.high <- train %>%
-#   filter(expensive == 1) %>%
-#   rename(all_of(rev.display)) %>%
-#   select(where(is.numeric)) %>%
-#   na.omit() %>%
-#   cor()
-# 
-# M.low <- train %>%
-#   filter(expensive == 0) %>%
-#   rename(all_of(rev.display)) %>%
-#   select(where(is.numeric)) %>%
-#   na.omit() %>%
-#   cor()
-# 
-# m.combine <- function(m1, m2, order) {
-#   if (nrow(m1) != ncol(m1) || nrow(m2) != ncol(m2) || nrow(m1) != nrow(m2)) {
-#     stop("Both matrices must be square and have the same dimensions.")
-#   }
-#   
-#   m1 <- abs(m1[, order])
-#   m2 <- -abs(m2[, order])
-#   
-#   n <- nrow(m1)
-#   names <- colnames(m1)
-#   
-#   comb <- matrix(NA, nrow = n, ncol = n)
-#   comb[lower.tri(comb, diag = TRUE)] <- m1[lower.tri(m1, diag = TRUE)]
-#   comb[upper.tri(comb, diag = TRUE)] <- m2[upper.tri(m2, diag = TRUE)]
-#   
-#   colnames(comb) <- names
-#   rownames(comb) <- names
-#   return(comb)
-# }
-
 corr.train <- train %>%
   rename(all_of(rev.display)) %>%
   select(where(is.numeric)) %>%
@@ -90,40 +56,6 @@ print(corrplot(corr.train,
                tl.cex = 0.4))
 title("Correlation Matrix of Commodity Prices", cex.main=0.8)
 dev.off()
-
-# my.order <- unique(plot.corr.train$corrPos$xName)
-# M <- m.combine(M.high, M.low, my.order)
-# 
-# plot.corr <- corrplot(M,
-#                       title = "Correlation Matrix of Commodity Prices",
-#                       method = "circle",
-#                       type = "full",
-#                       diag = FALSE,
-#                       #order = 'alpha',
-#                       outline = FALSE,
-#                       col = COL2("PuOr", 10),
-#                       tl.col = "black",
-#                       tl.srt = 45,
-#                       tl.cex = 0.4)
-# 
-# plot.corr
-# 
-# 
-# plot.diff <- corrplot(abs(M.high) - abs(M.low),
-#                       title = "Correlation Matrix of Commodity Prices",
-#                       method = "circle",
-#                       type = "full",
-#                       diag = FALSE,
-#                       order = 'FPC',
-#                       outline = FALSE,
-#                       col = COL2("PuOr", 10),
-#                       tl.col = "black",
-#                       tl.srt = 45,
-#                       tl.cex = 0.4)
-# 
-# 
-# 
-# plot.diff
 
 
 # Variables of Interest --------------------------------------------------------
@@ -169,7 +101,8 @@ upperfun <- function(data, mapping) {
   ggplot(data = data, mapping = mapping) +
     geom_point(alpha = 0.4) +
     geom_text(aes(label = paste("r =",round(c,3)), x=x_pos, y=y_pos),
-              color = "darkgray", size = 4)
+              color = "darkgray", size = 4) +
+    scale_color_manual(values = c("1" = RED, "0" = BLUE)) 
 }
 
 # create plot
@@ -182,7 +115,9 @@ plot.scatter <- train %>%
           upper = list(continuous = wrap(upperfun)),
           lower = "blank",
           labeller = as_labeller(display)) +
-  scatter.theme + labs(title = scatter.title)
+  scatter.theme + labs(title = scatter.title) +
+  scale_color_manual(values = c("1" = RED, "0" = BLUE)) +  
+  scale_fill_manual(values = c("1" = RED, "0" = BLUE))
 
 plot.scatter
 
@@ -213,6 +148,7 @@ plot.box <- train.long %>%
   facet_wrap(vars(type), ncol = 5, scales = "free_y", labeller = as_labeller(display)) +
   stat_boxplot(geom = "errorbar", width = 0.3) +
   geom_boxplot(width = 0.5, show.legend = FALSE,  outlier.shape = 1) +
+  scale_fill_manual(values = c("1" = RED, "0" = BLUE)) +
   box.theme + labs(title = box.title)
 
 plot.box
@@ -224,11 +160,15 @@ plot.box
 # create custom title
 country.title = "**Distribution of Average Monthly Salary by Country**"
 
+# top countries
+country.table <- sort(table(train$country), decreasing=TRUE)
+top.countries <- names(country.table[country.table > 50])
+
 # create plot
 plot.country <- train %>%
   # data cleaning
   group_by(country) %>%
-  filter(country != "Other") %>%
+  filter(country %in% top.countries) %>%
   na.omit() %>%
   # create plot
   ggplot(aes(x=reorder(country, -salary, median),

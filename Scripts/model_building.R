@@ -122,9 +122,18 @@ cat("The test error of 10-fold CV of LDA is", LDA.10CV, "\n")
 
 # Error Rate on Test Set -------------------------------------------------------
 
+logistic.table <- table(test.sub$expensive, logistic.preds > 0.8)
+logistic.table 
+
 label <- as.numeric(logistic.preds > 0.8)
 logistic.acc <- mean(test.sub$expensive == label)
 cat("The test error of logistic regression is", 1 - logistic.acc, "\n")
+
+
+LDA.table <- table(test.sub$expensive, LDA.preds$posterior[,2]>0.55)
+LDA.table
+err <- (LDA.table[2] + LDA.table[3]) / sum(LDA.table)
+err
 
 LDA.acc <- mean(test.sub$expensive == LDA.preds$class)
 cat("The test error of LDA is", 1 - LDA.acc, "\n")
@@ -159,6 +168,8 @@ logistic.reduced.10CV <- boot::cv.glm(train.sub, logistic.reduced, K=10)
 cat("The test error of 5-fold CV of Logistic Regression is", logistic.reduced.5CV$delta[1], "\n")
 cat("The test error of 10-fold CV of Logistic Regression is", logistic.reduced.10CV$delta[1], "\n")
 
+logistic.reduced.table <- table(test.sub$expensive, logistic.reduced.preds > 0.7)
+logistic.reduced.table 
 
 label.reduced <- as.numeric(logistic.reduced.preds > 0.70)
 logistic.reduced.acc <- mean(test.sub$expensive == label.reduced)

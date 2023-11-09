@@ -43,8 +43,8 @@ Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 | [`data-dict.csv`](Data/data-dict.csv)                 | [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE) |
 | [`train.rds`](Data/train.rds)                         | Transformed training data, created with `data_cleaning.R`                                              |
 | [`test.rds`](Data/test.rds)                           | Transformed testing data, created with `data_cleaning.R`                                               |
-| [`train-long.rds`](Data/train-long.rds)               | Long version of `train.rds`                                                                            |
-| [`testlong.rds`](Data/test-long.rds)                  | Long version of `testing.rds`                                                                          |
+| [`eda.rds`](Data/eda.rds)                             | Wide version of `train.rds` used for EDA                                                               |
+| [`eda-long.rds`](Data/eda-long.rds)                   | Long version of `train.rds` used for EDA                                                               |
 
 ### Output
 | [`countries.png`](Output/countries.png)      | [`scatter-matrix.png`](Output/scatter-matrix.png) | [`boxplots.png`](Output/boxplots.png)       | [`corr.png`](Output/corr.png)           |

@@ -25,13 +25,16 @@ data.dict <- read.csv(DICT_PATH)
 # Variable Selection -----------------------------------------------------------
 
 # remove unwanted variables
-exclude <- c("city", "country", "beer.rest.domestic", "beer.rest.imported",
+exclude.cls <- c("city", "country", "beer.rest.domestic", "beer.rest.imported",
              "coffee", "soda", "water.rest", "taxi.km", "taxi.hr",
              "rent1.center", "rent1.outer", "rent3.center", "rent3.outer",
              "sqm.center", "sqm.outer", "quality")
 
-train.processed <- train %>% dplyr::select(!all_of(exclude))
-test.processed <- train %>% dplyr::select(!all_of(exclude))
+exclude.test <- c("city","country", "quality", "rent1.center", "rent1.outer",
+                  "rent3.center", "rent3.outer", "sqm.center", "sqm.outer")
+
+train.processed <- train %>% dplyr::select(!all_of(exclude.test))
+test.processed <- train %>% dplyr::select(!all_of(exclude.test))
 
 
 # Recursive Binary Splitting ---------------------------------------------------
@@ -45,22 +48,23 @@ plot(tree.cls)
 text(tree.cls, cex=0.6, pretty=0)
 
 # predictions
-tree.cls.pred <- predict(tree.cls, newdata=test, type="class")
-tree.cls.probs <- predict(tree.cls, newdata=test)
+tree.cls.pred <- predict(tree.cls, newdata=test.processed, type="class")
+tree.cls.probs <- predict(tree.cls, newdata=test.processed)
 
 # confusion matrix for test data
-tree.cls.conf.5 <- table(test$expensive, tree.cls.pred)
-tree.cls.conf.5
+tree.cls.conf.d <- table(test.processed$expensive, tree.cls.pred)
+tree.cls.conf.d
 
-tree.cls.conf.7 <- table(test$expensive, tree.cls.probs[,2] > 0.7) # threshold = 0.7
-tree.cls.conf.7
+tree.thresh <- 0.55
+tree.cls.conf.c <- table(test.processed$expensive, tree.cls.probs[,2] > tree.thresh)
+tree.cls.conf.c
 
 # calculate test accuracy
-tree.cls.acc.5 <- mean(tree.cls.pred == test$expensive)
-tree.cls.acc.5
+tree.cls.acc.d <- mean(tree.cls.pred == test.processed$expensive)
+tree.cls.acc.d
 
-tree.cls.acc.7 <- mean(as.numeric(tree.cls.probs[,2] > 0.7) == test$expensive)
-tree.cls.acc.7
+tree.cls.acc.c <- mean(as.numeric(tree.cls.probs[,2] > tree.thresh) == test.processed$expensive)
+tree.cls.acc.c
 
 
 
@@ -87,28 +91,29 @@ plot(prune.cls)
 text(prune.cls, cex=0.75, pretty=0)
 
 # predictions
-prune.cls.pred <- predict(prune.cls, newdata=test, type="class")
-prune.cls.probs <- predict(prune.cls, newdata=test)
+prune.cls.pred <- predict(prune.cls, newdata=test.processed, type="class")
+prune.cls.probs <- predict(prune.cls, newdata=test.processed)
 
 # confusion matrix for test data
-prune.cls.conf.5 <- table(test$expensive, prune.cls.pred)
-prune.cls.conf.5
+prune.cls.conf.d <- table(test.processed$expensive, prune.cls.pred)
+prune.cls.conf.d
 
-prune.cls.conf.7 <- table(test$expensive, prune.cls.probs[,2] > 0.7) # threshold = 0.7
-prune.cls.conf.7
+prune.thresh <- 0.60
+prune.cls.conf.c <- table(test.processed$expensive, prune.cls.probs[,2] > prune.thresh)
+prune.cls.conf.c
 
 # calculate test accuracy
-prune.cls.acc.5 <- mean(prune.cls.pred == test$expensive)
-prune.cls.acc.5
+prune.cls.acc.d <- mean(prune.cls.pred == test.processed$expensive)
+prune.cls.acc.d
 
-prune.cls.acc.7 <- mean(as.numeric(prune.cls.probs[,2] > 0.7) == test$expensive)
-prune.cls.acc.7
+prune.cls.acc.c <- mean(as.numeric(prune.cls.probs[,2] > prune.thresh) == test.processed$expensive)
+prune.cls.acc.c
 
 
 # Random Forest ----------------------------------------------------------------
 
 set.seed(4630)
-rf.cls <- randomForest::randomForest(expensive~., data=train.processed, mtry=6, importance=TRUE) ## unsure about mtry number
+rf.cls <- randomForest::randomForest(expensive~., data=train.processed, mtry=7, importance=TRUE)
 rf.cls
 
 # see variable importance
@@ -116,28 +121,29 @@ round(importance(rf.cls),2)
 varImpPlot(rf.cls)
 
 # predictions
-rf.cls.pred <- predict(rf.cls, newdata=test, type="class")
-rf.cls.probs <- predict(rf.cls, newdata=test, type="prob")
+rf.cls.pred <- predict(rf.cls, newdata=test.processed, type="class")
+rf.cls.probs <- predict(rf.cls, newdata=test.processed, type="prob")
 
 # confusion matrix for test data
-rf.cls.conf.5 <- table(test$expensive, rf.cls.pred)
-rf.cls.conf.5
+rf.cls.conf.d <- table(test.processed$expensive, rf.cls.pred)
+rf.cls.conf.d
 
-rf.cls.conf.7 <- table(test$expensive, rf.cls.probs[,2] > 0.7) # threshold = 0.7
-rf.cls.conf.7
+rf.thresh <- 0.60
+rf.cls.conf.c <- table(test.processed$expensive, rf.cls.probs[,2] > rf.thresh)
+rf.cls.conf.c
 
 # calculate test accuracy
-rf.cls.acc.5 <- mean(rf.cls.pred == test$expensive)
-rf.cls.acc.5
+rf.cls.acc.d <- mean(rf.cls.pred == test.processed$expensive)
+rf.cls.acc.d
 
-rf.cls.acc.7 <- mean(as.numeric(rf.cls.probs[,2] > 0.7) == test$expensive)
-rf.cls.acc.7
+rf.cls.acc.c <- mean(as.numeric(rf.cls.probs[,2] > rf.thresh) == test.processed$expensive)
+rf.cls.acc.c
 
 
 # Comparing Performance --------------------------------------------------------
 
-cat("Recursive Binary Test Accuracy:", tree.cls.acc.5, tree.cls.acc.7, "\n",
-    "Pruned Test Accuracy:", prune.cls.acc.5, prune.cls.acc.7, "\n",
-    "Random Forest Test Accuracy:", rf.cls.acc.5, rf.cls.acc.7)
+cat("Recursive Binary Test Accuracy:", tree.cls.acc.d, tree.cls.acc.c, "(", tree.thresh, ")\n",
+    "Pruned Test Accuracy:", prune.cls.acc.d, prune.cls.acc.c, "(", prune.thresh, ")\n",
+    "Random Forest Test Accuracy:", rf.cls.acc.d, rf.cls.acc.c, "(", rf.thresh, ")")
 
 

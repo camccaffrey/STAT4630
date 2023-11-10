@@ -14,6 +14,7 @@ library(tidyverse)
 
 # load data
 data <- read.csv(DATA_PATH) %>%
+  filter(!is.na(x48) & !is.na(x54)) %>%
   mutate(country = as.factor(country),
          data_quality = as.factor(data_quality))
 

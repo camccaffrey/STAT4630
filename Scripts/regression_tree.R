@@ -25,13 +25,15 @@ data.dict <- read.csv(DICT_PATH)
 # Variable Selection -----------------------------------------------------------
 
 # remove unwanted variables
-exclude <- c("city", "country", "beer.rest.domestic", "beer.rest.imported",
+exclude.reg <- c("city", "country", "beer.rest.domestic", "beer.rest.imported",
              "coffee", "soda", "water.rest", "taxi.km", "taxi.hr",
              "rent1.center", "rent1.outer", "rent3.center", "rent3.outer",
              "sqm.center", "sqm.outer", "quality")
 
-train.processed <- train %>% dplyr::select(!all_of(exclude))
-test.processed <- train %>% dplyr::select(!all_of(exclude))
+exclude.test <- c("city","country", "quality", "expensive")
+
+train.processed <- train %>% dplyr::select(!all_of(exclude.test))
+test.processed <- train %>% dplyr::select(!all_of(exclude.test))
 
 
 # Recursive Binary Splitting ---------------------------------------------------
@@ -45,8 +47,8 @@ plot(tree.reg)
 text(tree.reg, cex=0.4, pretty=0)
 
 # calculate test MSE
-tree.reg.pred <- predict(tree.reg, newdata=test) 
-tree.reg.mse <- mean((test$salary - tree.reg.pred)^2)
+tree.reg.pred <- predict(tree.reg, newdata=test.processed) 
+tree.reg.mse <- mean((test.processed$salary - tree.reg.pred)^2)
 cat("Recursive Binary Test MSE:", tree.reg.mse)
 
 
@@ -76,8 +78,8 @@ plot(prune.reg)
 text(prune.reg, cex=0.4, pretty=0)
 
 # calculate test MSE
-prune.reg.pred <- predict(prune.reg, newdata=test) 
-prun.reg.mse <- mean((test$salary - prune.reg.pred)^2)
+prune.reg.pred <- predict(prune.reg, newdata=test.processed) 
+prune.reg.mse <- mean((test.processed$salary - prune.reg.pred)^2)
 cat("Pruned Tree Test MSE:", prune.reg.mse)
 
 
@@ -85,7 +87,8 @@ cat("Pruned Tree Test MSE:", prune.reg.mse)
 
 # create random forest, mtry = p/3 for regression tress (see Lab 8b)
 set.seed(4630)
-rf.reg <- randomForest::randomForest(salary ~ ., data=train.processed, mtry=2,importance=TRUE)
+rf.reg <- randomForest::randomForest(salary ~ ., data=train.processed,
+                                     mtry=18,importance=TRUE)
 rf.reg
 
 # variable importance
@@ -93,8 +96,8 @@ importance(rf.reg)
 varImpPlot(rf.reg)
 
 # calculate test MSE
-rf.reg.pred <- predict(rf.reg, newdata=test)
-rf.reg.mse <- mean((test$salary - rf.reg.pred)^2)
+rf.reg.pred <- predict(rf.reg, newdata=test.processed)
+rf.reg.mse <- mean((test.processed$salary - rf.reg.pred)^2)
 cat("Random Forest Test MSE:", rf.reg.mse)
 
 

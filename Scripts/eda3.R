@@ -1,7 +1,7 @@
 
 #
-# File: eda.R
-# Description: basic EDA, built off of Milestone 2
+# File: eda3.R
+# Description: EDA for Milestone 3, built off of Milestone 2
 #
 
 # Load Dependencies ------------------------------------------------------------
@@ -21,8 +21,8 @@ library(corrplot)
 
 # load data
 data.dict <- read.csv(DICT_PATH)
-train <- readRDS(TRAIN_PATH)
-train.long <- readRDS(TRAINLONG_PATH)
+train <- readRDS(EDA_PATH)
+train.long <- readRDS(EDALONG_PATH)
 
 # load themes
 source(file.path("Scripts", "themes.R"))
@@ -30,32 +30,6 @@ source(file.path("Scripts", "themes.R"))
 # create display names
 display <- setNames(data.dict$Display, data.dict$Alias)
 rev.display <- setNames(data.dict$Alias, data.dict$Display)
-
-
-# Correlation Matrix -----------------------------------------------------------
-
-corr.train <- train %>%
-  rename(all_of(rev.display)) %>%
-  select(where(is.numeric)) %>%
-  na.omit() %>%
-  cor()
-
-path.corr <- file.path(ROOT, "Output", "corr.png")
-
-png(path.corr, width=7, height=7, units="in", res=200)
-print(corrplot(corr.train,
-               #title = "Correlation Matrix of Commodity Prices",
-               method = "circle",
-               type = "lower",
-               diag = TRUE,
-               order = 'FPC',
-               outline = FALSE,
-               col = COL2("PuOr", 10),
-               tl.col = "black",
-               tl.srt = 45,
-               tl.cex = 0.4))
-title("Correlation Matrix of Commodity Prices", cex.main=0.8)
-dev.off()
 
 
 # Variables of Interest --------------------------------------------------------

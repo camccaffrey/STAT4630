@@ -1,0 +1,226 @@
+---
+title: "STAT 4630 Milestone 4"
+author: "Grace Shim"
+date: "2023-11-05"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+ 
+# 5. Classification Tree
+
+```{r}
+library(dplyr)
+library(tree)
+library(randomForest)
+cost_of_living <- read.csv("cost-of-living_v2.csv")
+```
+
+# a, b: Data Cleaning 
+
+Variables that are strongly or directed related to each other need to be removed.
+Therefore, we decided to remove x4 (domestic beer), x5 (mcmeal), x6 (imported
+beer), x7 (coke/pepsi), and x8 (water bottle in restaurants) because they were 
+similar to our variable x2 (meal for 2 people at a restaurant). We also removed 
+the predictors x31 (taxi 1km) and x32 (taxi 1hr waiting) because we already had 
+the predictor x30 (taxi start) in our data. Finally, we decided to remove the 
+predictors x49 (1 bedroom apartment outside of city), x50 (3 bedroom apartment
+in city), x51 (3 bedroom apartment outside the city), x52 (price per square m to
+buy apartment in city), and x53 (price per square m to buy apartment outside of 
+city) because all these variable were closely related to our response variable 
+x48 (1 bedroom apartment in the city). 
+
+We also decided to remove the qualitative predictors country and city. We 
+removed the column data quality, which is not an actual predictor in the data. 
+
+We also chose to get rid of columns with more than 30% NA values, which removed 
+the predictors x28 (one way ticket), x29 (monthly pass), x40 (tennis court 
+rent), and x43 (international primary school for 1 child) from our data. We then
+removed all rows with NA values afterwards to get our final cleaned dataset with
+2,060 rows and 39 predictor columns. 
+
+Finally, we chose to convert our response variable x48 (rent for a 1 bedroom 
+apartment in the city) into a categorical variable, with levels of inexpensive
+and expensive based on the value of the median rent price. 
+
+```{r}
+#should i remove same predictors?? kept x4-x8
+data <- cost_of_living %>% select(
+  -country, 
+  -city, 
+  -data_quality,
+  -x4,
+  -x5,
+  -x6,
+  -x7,
+  -x8,
+  -x31,
+  -x32,
+  -x49,
+  -x50,
+  -x51,
+  -x52,
+  -x53
+)
+
+colnames(data) <- c("meal1", "meal2", "mcmeal","milk", "bread", "rice", "eggs", 
+                    "cheese", "chicken", "beef", "apples", "bananas", "oranges",
+                    "tomatoes", "potatoes", "onions", "lettuce", "water.market",
+                    "wine", "beer.market.domestic", "beer.market.imported", 
+                    "cigarettes", "ticket", "pass", "taxi.start", "gas", 
+                    "volkswagen", "toyota", "basic", "mobile", "internet",
+                    "gym", "tennis", "cinema", "preschool", "school", "jeans",
+                    "dresses", "nikes", "shoes", "rent", "salary", "mortgage")
+
+
+removed <- colMeans(is.na(data)) < 0.3
+#removed x28, x29, x40, x43
+data <- data[removed]
+
+data <- na.omit(data)
+
+middle = median(data$rent, na.rm=T)
+
+
+# might need to redo using training data median?
+Data = data %>% mutate(expensive = ifelse(rent>=middle, "1", "0")) 
+Data = Data[,!(names(Data) %in% "rent")]
+Data$expensive <- as.factor(Data$expensive)
+```
+
+# c: Fitting Classification Tree
+
+```{r}
+set.seed(4630)
+
+# 50/50 ratio
+sample.data<-sample.int(nrow(Data), floor(0.5*nrow(Data)), replace = F)
+train<-Data[sample.data, ]
+test<-Data[-sample.data, ]
+
+#the response variable:
+y.test<-test[,"expensive"]
+```
+
+## c.i: Output
+```{r}
+tree <- tree(expensive~., data=train)
+# Summary:
+summary(tree)
+```
+
+## c.ii, iii: Terminal Nodes and Predictors
+9 terminal nodes
+The predictors that were used are:
+
+- "salary": average monthly net salary (after tax)
+- "meal2": the price of a three-course meal for 2 people at a mid-range restaurant
+- "gym": monthly fitness club fee for 1 adult
+- "mortgage": yearly mortgage interest rate in % 
+- "chicken": price of 1kg of chicken fillets
+- "preschool": price of full day private preschool/kindergarten for 1 child
+
+## c. iv: Graphical Output
+```{r}
+plot(tree)
+text(tree, cex=0.6)
+```
+
+## c.v: Description
+
+Our question of interest focused on which prices of everyday items best 
+distinguished cities with high vs low rent prices. The tree tells us that the
+most important predictor in determining rent prices is salary. The other
+predictors that appear in the tree also play a large role in determining the
+classification of an expensive vs inexpensive apartment. This combination of 
+predictors results in the lowest RSS. 
+
+## c.vi: Confusion Matrix 
+```{r}
+tree.pred.test<-predict(tree, newdata=test, type="class") 
+
+##confusion matrix for test data
+table(y.test, tree.pred.test)
+```
+
+## c. vii, viii, ix
+
+Overall test error rate: 124/1030 = 0.120
+
+False positive rate: 93/516 = 0.180
+
+False negative rate: 31/514 = 0.060
+
+## c. x: Discussion
+
+No, the confusion matrix threshold does not to be adjusted, as a threshold of
+0.5 currently has both low false positive and false negative rates while
+minimizing the error rate. However, if we potentially wanted to reduce the 
+false positive rate, we could test a threshold of 0.7 just to see what happens: 
+```{r}
+pred.probs<-predict(tree, newdata=test)
+##confusion matrix with different threshold of 0.7 for example
+table(y.test, pred.probs[,2]>0.7) 
+```
+Overall test error rate: 165/1030 = 0.160
+
+False positive rate: 23/516 = 0.045
+
+False negative rate: 142/514 = 0.276
+
+The false positive rate is lowered at the expense of the false negative rate 
+and the overall test error, showing that a threshold of 0.5 works best. 
+
+# d. Pruned Tree ????
+```{r}
+set.seed(4630)
+cv.class<-tree::cv.tree(tree, K=10, FUN=prune.misclass) 
+cv.class
+
+##plot of dev against size
+plot(cv.class$size, cv.class$dev,type='b')
+
+##size of tree chosen by pruning
+trees.num.class<-cv.class$size[which.min(cv.class$dev)]
+trees.num.class #9 and 5 have same dev??
+
+##fit tree with size chosen by pruning
+prune.class<-tree::prune.misclass(tree, best=5)
+prune.class
+```
+# e. Random Forests
+```{r}
+set.seed(4630)
+rf<-randomForest(expensive~., data=train, mtry=6,importance=TRUE) ## unsure about mtry number
+
+round(importance(rf),2)
+varImpPlot(rf)
+```
+
+## e.i: Important Predictors
+
+The most important predictors were:
+
+- salary
+- cigarettes
+- meal
+- cinema
+- meal2
+- preschool
+
+
+## e. ii, iii, iv, v:
+
+```{r}
+rf
+```
+Overall Error Rate: 107 / 1030 = 0.104
+
+False Positive Rate: 55 / 514  = 0.107
+
+False Negative Rate: 52 / 516 = 0.101
+
+
+

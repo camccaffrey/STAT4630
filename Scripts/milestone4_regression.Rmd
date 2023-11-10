@@ -1,0 +1,216 @@
+---
+title: "Milestone 4 Regression Tree"
+author: "Group 13"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+Regression Question: How indicative are the prices of everyday commodities of a city’s average income?
+
+```{r}
+library(pacman)
+p_load(MASS, tree, randomForest, gbm, dplyr, tidyverse)
+
+train <- readRDS("C:/Users/abz20/OneDrive/Desktop/UVA Courses/Statistical Machine Learning (STAT 4630)/STAT4630Project/Scripts/train.rds")
+test <- readRDS("C:/Users/abz20/OneDrive/Desktop/UVA Courses/Statistical Machine Learning (STAT 4630)/STAT4630Project/Scripts/test.rds")
+```
+
+Parts A and B: Data Cleaning/Processing, Subsetting to Plausible Predictors
+```{r}
+# exclude predictors related to each other or unrelated to question
+train = train %>% dplyr::select(-city,
+                                -country,
+                                -beer.rest.domestic,
+                                -beer.rest.imported,
+                                -coffee,
+                                -soda,
+                                -water.rest,
+                                -taxi.km,
+                                -taxi.hr,
+                                -rent1.center,
+                                -rent1.outer,
+                                -rent3.center,
+                                -rent3.outer,
+                                -sqm.center,
+                                -sqm.outer,
+                                -quality)
+
+test = test %>% dplyr::select(-city,
+                                -country,
+                                -beer.rest.domestic,
+                                -beer.rest.imported,
+                                -coffee,
+                                -soda,
+                                -water.rest,
+                                -taxi.km,
+                                -taxi.hr,
+                                -rent1.center,
+                                -rent1.outer,
+                                -rent3.center,
+                                -rent3.outer,
+                                -sqm.center,
+                                -sqm.outer,
+                                -quality)
+```
+
+Excluded variables:
+- city and country because they're identifiers, neither predictor nor response
+- beer.rest.domestic, beer.rest.imported, coffee, soda, water.rest, because they're related to meal1, meal2, and mcmeal
+- taxi.km and taxi.hr because they're related to taxi.start
+- rent1.center because this was converted to a categorical variable, expensive, so it would be redundant to include this
+- rent1.outer, rent3.center, rent3.outer, sqm.center, and sqm.outer because they're closely related to "expensive"
+- quality because this isn't related to cost of living
+
+Part C: Recursive Binary Splitting
+```{r}
+# fit tree model using training data with binary recursive splitting
+tree.result = tree::tree(salary ~ ., data = train) # x54 is monthly salary
+```
+
+i. 
+```{r}
+# see output
+summary(tree.result)
+```
+
+ii. 8 terminal nodes
+
+iii. Variables actually used in tree construction: "cinema" "ticket" "meal1" "bread" "cigarettes" "pass" "preschool" 
+
+iv. 
+```{r}
+# decision tree built on training data with recursive binary splitting
+plot(tree.result)
+text(tree.result, cex=0.4)
+```
+
+v. This answers our question of interest by selecting which predictors out of all our plausible predictors are most important in predicting the average monthly salary in a city. 
+
+vi. 
+```{r}
+# find predictions for test data
+tree.pred.test = predict(tree.result, newdata=test) 
+
+# find test MSE
+recursive_binary_test_mse = mean((test$salary - tree.pred.test)^2)
+
+cat("Recursive Binary Test MSE:", recursive_binary_test_mse)
+```
+
+Part D: Pruned Tree
+
+Note: The pruned tree is the same as the tree from recursive binary
+splitting. I still answered the questions from Part C just in case we decide to redo this. 
+
+```{r}
+# use 10-fold CV to prune tree
+cv.Dataset = tree::cv.tree(tree.result, K=10)
+cv.Dataset
+
+# plot of residual mean deviance vs size of tree with pruning
+plot(cv.Dataset$size, cv.Dataset$dev, type="b", xlab="Size of Tree", ylab="Res Mean Deviance")
+
+# see size of tree which gives best tree based on pruning and 10-fold CV
+trees.num = cv.Dataset$size[which.min(cv.Dataset$dev)]
+trees.num
+```
+
+```{r}
+# refit with training data
+tree.train = tree::tree(salary ~ ., data = train)
+prune.train = tree::prune.tree(tree.train, best=trees.num)
+
+# decision tree with pruning, with training data
+plot(prune.train)
+text(prune.train, cex=0.4)
+
+# numerical summary of pruned tree
+prune.train
+```
+
+
+i. 
+```{r}
+# see output
+summary(prune.train)
+```
+
+ii. 8 terminal nodes
+
+iii. Variables actually used in tree construction: "cinema" "ticket" "meal1" "bread" "cigarettes" "pass" "preschool"
+
+iv. 
+```{r}
+# decision tree built on training data with recursive binary splitting
+plot(prune.train)
+text(prune.train, cex=0.4)
+```
+
+v. This answers our question of interest by selecting which predictors out of all our plausible predictors are most important in predicting the average monthly salary in a city, but with less overfitting.  
+
+vi. 
+```{r}
+# find predictions for test data
+tree.pred.test = predict(prune.train, newdata=test) 
+
+# find test MSE
+pruned_tree_test_mse = mean((test$salary - tree.pred.test)^2)
+
+cat("Pruned Tree Test MSE:", pruned_tree_test_mse)
+```
+
+Part E: Random Forests
+```{r}
+rf.class = randomForest::randomForest(salary ~ ., data=train, mtry=2,importance=TRUE) # mtry = p/3 for regression tress (see Lab 8b)
+rf.class
+
+importance(rf.class)
+varImpPlot(rf.class)
+```
+
+i. ticket and cinema are most important predictors
+
+```{r}
+# test accuracy with Random Forest
+pred.rf<-predict(rf.class, newdata=test)
+
+RF_test_mse = mean((test$salary - pred.rf)^2)
+
+cat("Random Forest Test MSE:", RF_test_mse)
+```
+Part F: Conclusion 
+
+i. 
+```{r}
+cat("Recursive Binary Test MSE:", recursive_binary_test_mse, "\n",
+    "Pruned Test MSE:", pruned_tree_test_mse, "\n",
+    "Random Forest Test MSE:", RF_test_mse)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

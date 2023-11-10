@@ -48,4 +48,8 @@ country.theme <- theme_bw() + markdown.title +
   theme(axis.text.x = element_text(angle = -45, hjust=0),
         panel.grid.major.x = element_blank())
 
+# salary histogram
+hist.theme <- theme_bw() + markdown.title
+
+
 

@@ -32,7 +32,8 @@ Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 |--------------------------------------------------|-------------------------------------------------------------------------------------|
 | [`config.R`](Scripts/config.R)                   | Global variables that can be loaded with `source(file.path("Scripts", "config.R"))` |
 | [`data_cleaning.R`](Scripts/data_cleaning.R)     | Splits and transforms data. Outputs: `train.rds`, `test.rds`, etc.                  |
-| [`eda.R`](Scripts/eda.R)                         | Based off of Google Colab notebook used for Milestone 2 EDA                         |
+| [`eda3.R`](Scripts/eda3.R)                       | EDA for Classification Problem (Milestone 3)                                        |
+| [`eda4.R`](Scripts/eda4.R)                       | EDA for Regression Problem (Milestone 4)                                            |
 | [`themes.R`](Scripts/themes.R)                   | Stores custom themes and related variables + functions                              |
 | [`Milestone3EDA.Rmd`](Scripts/Milestone3EDA.Rmd) | Ada's EDA for Milestone 3                                                           |
 
@@ -43,13 +44,18 @@ Group 13's Repository for *STAT 4630: Statistical Machine Learning*
 | [`data-dict.csv`](Data/data-dict.csv)                 | [Data Dictionary](https://docs.google.com/spreadsheets/d/1kLACSfz_Ong4xYVKJl5fUlyfeKf7uE2nLWon1aV8aCE) |
 | [`train.rds`](Data/train.rds)                         | Transformed training data, created with `data_cleaning.R`                                              |
 | [`test.rds`](Data/test.rds)                           | Transformed testing data, created with `data_cleaning.R`                                               |
-| [`train-long.rds`](Data/train-long.rds)               | Long version of `train.rds`                                                                            |
-| [`testlong.rds`](Data/test-long.rds)                  | Long version of `testing.rds`                                                                          |
+| [`eda.rds`](Data/eda.rds)                             | Wide version of `train.rds` used for EDA                                                               |
+| [`eda-long.rds`](Data/eda-long.rds)                   | Long version of `train.rds` used for EDA                                                               |
 
 ### Output
 | [`countries.png`](Output/countries.png)      | [`scatter-matrix.png`](Output/scatter-matrix.png) | [`boxplots.png`](Output/boxplots.png)       |
 |----------------------------------------------|---------------------------------------------------|---------------------------------------------|
 | <img src="Output/countries.png" width="200"> | <img src="Output/scatter-matrix.png" width="200"> | <img src="Output/boxplots.png" width="200"> |
+
+| [`corr.png`](Output/corr.png)           | [`histogram.png`](Output/histogram.png)      | [`salary-scatter.png`](Output/salary-scatter.png) |
+|-----------------------------------------|----------------------------------------------|---------------------------------------------------|
+| <img src="Output/corr.png" width="200"> | <img src="Output/histogram.png" width="200"> | <img src="Output/salary-scatter.png" width="200"> |
+
 
 ### Project Root
 | Name                 | Description                                                                              |

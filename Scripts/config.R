@@ -16,8 +16,8 @@ DICT_PATH <- file.path(ROOT, "Data", "data-dict.csv")
 TRAIN_PATH <- file.path(ROOT, "Data", "train.rds")
 TEST_PATH <- file.path(ROOT, "Data", "test.rds")
 
-TRAINLONG_PATH <- file.path(ROOT, "Data", "train-long.rds")
-TESTLONG_PATH <- file.path(ROOT, "Data", "test-long.rds")
+EDA_PATH <- file.path(ROOT, "Data", "eda.rds")
+EDALONG_PATH <- file.path(ROOT, "Data", "eda-long.rds")
 
 
 # Packages (RENV Alternative) --------------------------------------------------

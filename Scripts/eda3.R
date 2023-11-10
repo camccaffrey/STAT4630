@@ -1,7 +1,7 @@
 
 #
-# File: eda.R
-# Description: basic EDA, built off of Milestone 2
+# File: eda3.R
+# Description: EDA for Milestone 3, built off of Milestone 2
 #
 
 # Load Dependencies ------------------------------------------------------------
@@ -17,11 +17,12 @@ library(rlang)
 library(GGally)
 library(viridis)
 library(grid)
+library(corrplot)
 
 # load data
 data.dict <- read.csv(DICT_PATH)
-train <- readRDS(TRAIN_PATH)
-train.long <- readRDS(TRAINLONG_PATH)
+train <- readRDS(EDA_PATH)
+train.long <- readRDS(EDALONG_PATH)
 
 # load themes
 source(file.path("Scripts", "themes.R"))
@@ -38,7 +39,7 @@ x <- c(33, 36, 41, 1, 9, 10, 12, 17, 24, 54)
 
 # names of columns
 COLS1 <- colnames(train)[x+2]
-COLS2 <- COLS1[1:5]
+COLS2 <- COLS1[c(3, 4, 6, 7, 10)]
 
 
 # Scatterplot Matrix -----------------------------------------------------------
@@ -74,20 +75,23 @@ upperfun <- function(data, mapping) {
   ggplot(data = data, mapping = mapping) +
     geom_point(alpha = 0.4) +
     geom_text(aes(label = paste("r =",round(c,3)), x=x_pos, y=y_pos),
-              color = "darkgray", size = 4)
+              color = "darkgray", size = 4) +
+    scale_color_manual(values = c("1" = RED, "0" = BLUE)) 
 }
 
 # create plot
 plot.scatter <- train %>%
   # data cleaning
-  select(all_of(COLS2), expensive) %>%
+  dplyr::select(all_of(COLS2), expensive) %>%
   na.omit() %>%
   # create scatterplot matrix
   ggpairs(columns = 1:5, aes(colour = expensive, alpha = 0.4),
           upper = list(continuous = wrap(upperfun)),
           lower = "blank",
           labeller = as_labeller(display)) +
-  scatter.theme + labs(title = scatter.title)
+  scatter.theme + labs(title = scatter.title) +
+  scale_color_manual(values = c("1" = RED, "0" = BLUE)) +  
+  scale_fill_manual(values = c("1" = RED, "0" = BLUE))
 
 plot.scatter
 
@@ -118,6 +122,7 @@ plot.box <- train.long %>%
   facet_wrap(vars(type), ncol = 5, scales = "free_y", labeller = as_labeller(display)) +
   stat_boxplot(geom = "errorbar", width = 0.3) +
   geom_boxplot(width = 0.5, show.legend = FALSE,  outlier.shape = 1) +
+  scale_fill_manual(values = c("1" = RED, "0" = BLUE)) +
   box.theme + labs(title = box.title)
 
 plot.box
@@ -129,11 +134,15 @@ plot.box
 # create custom title
 country.title = "**Distribution of Average Monthly Salary by Country**"
 
+# top countries
+country.table <- sort(table(train$country), decreasing=TRUE)
+top.countries <- names(country.table[country.table > 50])
+
 # create plot
 plot.country <- train %>%
   # data cleaning
   group_by(country) %>%
-  filter(country != "Other") %>%
+  filter(country %in% top.countries) %>%
   na.omit() %>%
   # create plot
   ggplot(aes(x=reorder(country, -salary, median),

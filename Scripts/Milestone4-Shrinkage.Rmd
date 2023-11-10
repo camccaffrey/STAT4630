@@ -1,0 +1,167 @@
+---
+title: "Milestone 4 Shrinkage Method"
+author: "Zhengguang Wang"
+date: "2023-11-09"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# a)
+```{r}
+library(dplyr)
+train <- readRDS("train.rds")
+test <- readRDS("test.rds")
+```
+
+# b)
+```{r}
+train = train %>% dplyr::select(-city,
+                                -country,
+                                -beer.rest.domestic,
+                                -beer.rest.imported,
+                                -coffee,
+                                -soda,
+                                -water.rest,
+                                -taxi.km,
+                                -taxi.hr,
+                                -rent1.outer,
+                                -rent3.center,
+                                -rent3.outer,
+                                -sqm.center,
+                                -sqm.outer,
+                                -quality,
+                                -expensive)
+test = test %>% dplyr::select(-city,
+                                -country,
+                                -beer.rest.domestic,
+                                -beer.rest.imported,
+                                -coffee,
+                                -soda,
+                                -water.rest,
+                                -taxi.km,
+                                -taxi.hr,
+                                -rent1.outer,
+                                -rent3.center,
+                                -rent3.outer,
+                                -sqm.center,
+                                -sqm.outer,
+                                -quality,
+                                -expensive
+                                )
+total<-rbind(train, test)
+y<-total$salary
+x<-model.matrix(salary~.,data=total)[,-1]
+```
+# c)
+```{r}
+library(glmnet)
+ridge.r<-glmnet::glmnet(x,y,alpha=0, lambda=0)
+##compare with OLS
+result<-lm(salary~.,data=total)
+ridge.r<-glmnet::glmnet(x,y,alpha=0, lambda=0, thresh = 1e-32)
+cbind(coefficients(result), coefficients(ridge.r))
+```
+# d)
+```{r}
+x_train<-model.matrix(salary~.,data=train)[,-1]
+x_test<-model.matrix(salary~.,data=test)[,-1]
+y_train<-train$salary
+y_test<-test$salary
+```
+## i)
+```{r}
+set.seed(4630)
+cv.out<-glmnet::cv.glmnet(x_train,y_train,nfolds=10, alpha=0, thresh = 1e-23)
+bestlam_ridge<-cv.out$lambda.min
+bestlam_ridge
+```
+
+## ii)
+```{r}
+plot(cv.out)
+xticks <- seq(0, 10, by = 0.2)
+axis(1, at = xticks)
+```
+
+## iii)
+37 
+
+## iv)
+```{r}
+ridge_model<-glmnet::glmnet(x_train,y_train,alpha=0,lambda=bestlam_ridge,
+thresh = 1e-23)
+options(scipen = 999)
+ridge_coefficients<-coefficients(ridge_model)
+coefficients_and_names <- data.frame(
+  Variable = rownames(ridge_coefficients),
+  Coefficient = as.numeric(ridge_coefficients)
+)
+
+# Order coefficients by absolute value in descending order
+coefficients_and_names <- coefficients_and_names[order(-abs(coefficients_and_names$Coefficient)), ]
+
+# Print the ordered coefficients
+print(coefficients_and_names)
+```
+
+## v)
+```{r}
+ridge_pred<-predict(ridge_model,newx=x_test)
+mean((ridge_pred-y_test)^2)
+```
+
+
+# e)
+## i)
+```{r}
+set.seed(4630)
+cv.out<-glmnet::cv.glmnet(x_train,y_train,nfolds=10, alpha=1, thresh = 1e-23)
+bestlam_lasso<-cv.out$lambda.min
+bestlam_lasso
+```
+
+## ii)
+```{r}
+plot(cv.out)
+xticks <- seq(0, 10, by = 0.2)
+axis(1, at = xticks)
+```
+
+## iii)
+28
+
+## iv)
+```{r}
+lasso_model<-glmnet::glmnet(x_train,y_train,alpha=1,lambda=bestlam_lasso,
+thresh = 1e-23)
+options(scipen = 999)
+
+lasso_coefficients <-coef(lasso_model)
+coefficients_and_names <- data.frame(
+  Variable = rownames(lasso_coefficients),
+  Coefficient = as.numeric(lasso_coefficients)
+)
+
+# Order coefficients by absolute value in descending order
+coefficients_and_names <- coefficients_and_names[order(-abs(coefficients_and_names$Coefficient)), ]
+
+# Print the ordered coefficients
+print(coefficients_and_names)
+```
+
+## v)
+```{r}
+lasso_pred<-predict(lasso_model,newx=x_test)
+mean((lasso_pred-y_test)^2)
+```
+
+# f)
+```{r}
+ols_model<-glmnet::glmnet(x_train,y_train,alpha=0, lambda=0, thresh = 1e-23)
+ols_pred<-predict(ols_model,newx=x_test)
+mean((ols_pred-y_test)^2)
+```
+

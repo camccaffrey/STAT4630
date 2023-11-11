@@ -33,7 +33,7 @@ exclude.reg <- c("city", "country", "beer.rest.domestic", "beer.rest.imported",
 exclude.test <- c("city","country", "quality", "expensive")
 
 train.processed <- train %>% dplyr::select(!all_of(exclude.test))
-test.processed <- train %>% dplyr::select(!all_of(exclude.test))
+test.processed <- test %>% dplyr::select(!all_of(exclude.test))
 
 
 # Recursive Binary Splitting ---------------------------------------------------
@@ -44,7 +44,7 @@ summary(tree.reg)
 
 # plot tree
 plot(tree.reg)
-text(tree.reg, cex=0.4, pretty=0)
+text(tree.reg, cex=0.75, pretty=0)
 
 # calculate test MSE
 tree.reg.pred <- predict(tree.reg, newdata=test.processed) 
@@ -75,7 +75,7 @@ summary(prune.reg)
 
 # decision tree with pruning, with training data
 plot(prune.reg)
-text(prune.reg, cex=0.4, pretty=0)
+text(prune.reg, cex=0.75, pretty=0)
 
 # calculate test MSE
 prune.reg.pred <- predict(prune.reg, newdata=test.processed) 

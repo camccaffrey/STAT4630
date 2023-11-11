@@ -34,7 +34,7 @@ exclude.test <- c("city","country", "quality", "rent1.center", "rent1.outer",
                   "rent3.center", "rent3.outer", "sqm.center", "sqm.outer")
 
 train.processed <- train %>% dplyr::select(!all_of(exclude.test))
-test.processed <- train %>% dplyr::select(!all_of(exclude.test))
+test.processed <- test %>% dplyr::select(!all_of(exclude.test))
 
 
 # Recursive Binary Splitting ---------------------------------------------------
@@ -45,7 +45,7 @@ summary(tree.cls)
 
 # plot tree
 plot(tree.cls)
-text(tree.cls, cex=0.6, pretty=0)
+text(tree.cls, cex=0.75, pretty=0)
 
 # predictions
 tree.cls.pred <- predict(tree.cls, newdata=test.processed, type="class")
@@ -55,7 +55,7 @@ tree.cls.probs <- predict(tree.cls, newdata=test.processed)
 tree.cls.conf.d <- table(test.processed$expensive, tree.cls.pred)
 tree.cls.conf.d
 
-tree.thresh <- 0.55
+tree.thresh <- 0.60
 tree.cls.conf.c <- table(test.processed$expensive, tree.cls.probs[,2] > tree.thresh)
 tree.cls.conf.c
 
@@ -71,7 +71,7 @@ tree.cls.acc.c
 
 # Pruning ----------------------------------------------------------------------
 
-set.seed(4630)
+set.seed(SEED)
 cv.cls.10 <- tree::cv.tree(tree.cls, K=10, FUN=prune.misclass) 
 cv.cls.10
 
@@ -80,11 +80,11 @@ plot(cv.cls.10$size, cv.cls.10$dev,type='b')
 
 # size of tree chosen by pruning
 prune.cls.num <- cv.cls.10$size[which.min(cv.cls.10$dev)]
-prune.cls.num #9 and 5 have same dev??
+prune.cls.num # 7 and 4 have same
 
 # fit tree with size chosen by pruning
-prune.cls <-tree::prune.misclass(tree.cls, best=5)
-prune.cls
+prune.cls <-tree::prune.misclass(tree.cls, best=4)
+summary(prune.cls)
 
 # plot pruned tree
 plot(prune.cls)
@@ -98,7 +98,7 @@ prune.cls.probs <- predict(prune.cls, newdata=test.processed)
 prune.cls.conf.d <- table(test.processed$expensive, prune.cls.pred)
 prune.cls.conf.d
 
-prune.thresh <- 0.60
+prune.thresh <- 0.5
 prune.cls.conf.c <- table(test.processed$expensive, prune.cls.probs[,2] > prune.thresh)
 prune.cls.conf.c
 
@@ -112,7 +112,7 @@ prune.cls.acc.c
 
 # Random Forest ----------------------------------------------------------------
 
-set.seed(4630)
+set.seed(SEED)
 rf.cls <- randomForest::randomForest(expensive~., data=train.processed, mtry=7, importance=TRUE)
 rf.cls
 
@@ -121,14 +121,14 @@ round(importance(rf.cls),2)
 varImpPlot(rf.cls)
 
 # predictions
-rf.cls.pred <- predict(rf.cls, newdata=test.processed, type="class")
+rf.cls.pred <- predict(rf.cls, newdata=test.processed)
 rf.cls.probs <- predict(rf.cls, newdata=test.processed, type="prob")
 
 # confusion matrix for test data
 rf.cls.conf.d <- table(test.processed$expensive, rf.cls.pred)
 rf.cls.conf.d
 
-rf.thresh <- 0.60
+rf.thresh <- 0.55
 rf.cls.conf.c <- table(test.processed$expensive, rf.cls.probs[,2] > rf.thresh)
 rf.cls.conf.c
 

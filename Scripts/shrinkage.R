@@ -34,7 +34,7 @@ exclude.shr <- c("city","country", "beer.rest.domestic", "beer.rest.imported",
 exclude.test <- c("city","country", "quality", "expensive")
 
 train.processed <- train %>% dplyr::select(!all_of(exclude.test))
-test.processed <- train %>% dplyr::select(!all_of(exclude.test))
+test.processed <- test %>% dplyr::select(!all_of(exclude.test))
 
 
 # Reformat Dataframes ----------------------------------------------------------
@@ -130,8 +130,8 @@ df.lasso <- data.frame(
 # Order coefficients by absolute value in descending order
 df.lasso <- df.lasso[order(-abs(df.lasso$coef)), ]
 
-df.lasso.high <- df.ridge[1:28, ]
-df.lasso.low <- df.ridge[29:56, ]
+df.lasso.high <- df.lasso[1:28, ]
+df.lasso.low <- df.lasso[29:56, ]
 
 rownames(df.lasso.high) <- NULL
 rownames(df.lasso.low) <- NULL
@@ -152,8 +152,40 @@ lasso.mse
 
 # Comparison with OLS ----------------------------------------------------------
 
+# create model
 model.ols <- glmnet::glmnet(x.train, y.train, alpha=0, lambda=0, thresh=1e-32)
+
+options(scipen = 999)
+coef.ols <-coef(model.ols)
+df.ols <- data.frame(
+  var=rownames(coef.ols),
+  coef=round(as.numeric(coef.ols),3)
+)
+
+# Order coefficients by absolute value in descending order
+df.ols <- df.ols[order(-abs(df.ols$coef)), ]
+
+df.ols.high <- df.ols[1:28, ]
+df.ols.low <- df.ols[29:56, ]
+
+rownames(df.ols.high) <- NULL
+rownames(df.ols.low) <- NULL
+
+df.ols.high %>%
+  kbl(caption = "OLS Coefficients") %>%
+  kable_classic(full_width = FALSE, html_font = "Times New Roman")
+
+df.ols.low %>%
+  kbl(caption = "OLS Coefficients") %>%
+  kable_classic(full_width = FALSE, html_font = "Times New Roman")
+
+
+# calculate test MSE
 ols.pred <- predict(model.ols, newx=x.test)
 ols.mse <- mean((ols.pred - y.test)^2)
 ols.mse
 
+
+ridge.mse
+lasso.mse
+ols.mse
